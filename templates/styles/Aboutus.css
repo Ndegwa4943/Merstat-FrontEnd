@@ -1,271 +1,231 @@
-/* ============= CSS Variables ============= */
-:root {
-    --primary-blue: #003366;
-    --accent-yellow: #FFC300;
-    --text-light: #CEF4EB;
-    --light-green: rgba(206, 244, 235, 0.8);
+/* ============= About Us Page Specific Styles ============= */
+
+/* Who We Are Section */
+.about-section {
+    padding: 120px 0 80px;
 }
 
-/* ============= Base Styles ============= */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Lato', sans-serif;
-    background-image: 
-        linear-gradient(to right, 
-        rgba(0, 51, 102, 0.3),
-        rgba(0, 51, 102, 0.4),
-        rgba(0, 51, 102, 0.5),
-        rgba(0, 51, 102, 0.6),
-        rgba(0, 51, 102, 0.7),
-        rgba(0, 51, 102, 0.8),
-        rgba(0, 51, 102, 0.9)), 
-        url(../images/Merstathero.jpg);
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    padding-top: 80px;
-    min-height: 100vh;
-    color: var(--text-light);
-}
-
-/* ============= Navigation Bar ============= */
-.navbar {
-    background: rgba(0, 51, 102, 0.95) !important;
-    padding: 0.8rem 1rem;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1030;
-}
-
-.navbar-brand {
-    font-weight: 700;
-    font-size: 1.8rem;
-    color: var(--accent-yellow) !important;
-    padding: 0;
-    margin-right: 2rem;
-}
-
-.navbar-toggler {
-    border-color: rgba(255, 195, 0, 0.5);
-    padding: 0.35rem 0.75rem;
-}
-
-.navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 195, 0, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-}
-
-.navbar-collapse {
-    justify-content: flex-end;
-}
-
-.navbar-nav {
-    align-items: center;
-}
-
-.nav-item {
-    margin: 0 0.5rem;
-}
-
-.nav-link {
-    color: rgba(255, 255, 255, 0.85) !important;
-    font-weight: 500;
-    padding: 0.5rem 0;
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-.nav-link:hover,
-.nav-link.active {
-    color: var(--accent-yellow) !important;
-}
-
-.nav-link:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--accent-yellow);
-    transition: width 0.3s ease;
-}
-
-.nav-link:hover:after,
-.nav-link.active:after {
-    width: 100%;
-}
-
-/* ============= About Us Content ============= */
-.about-us-section {
-    padding: 80px 100px;
-    background-color: transparent;
-}
-
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.main-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 60px;
-    gap: 40px;
-}
-
-.image-container {
-    flex: 1;
-    min-width: 300px;
-}
-
-.image-container img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.text-container {
-    flex: 1;
-}
-
-.text-container h2 {
-    font-size: 2.5rem;
+.section-main-title {
+    font-size: 3rem;
     color: var(--accent-yellow);
-    margin-bottom: 25px;
-    line-height: 1.2;
+    margin-bottom: 30px;
+    font-weight: 700;
 }
 
-.text-container p {
-    font-size: 1.1rem;
-    color: var(--text-light);
+.content-container .lead {
+    font-size: 1.5rem;
     line-height: 1.8;
     margin-bottom: 20px;
 }
 
-/* ============= Team Section ============= */
-.team-section {
-    margin-top: 60px;
-}
-
-.team-section h2 {
-    text-align: center;
-    color: var(--accent-yellow);
-    margin-bottom: 40px;
-    font-size: 2rem;
-}
-
-.team-row {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 30px;
-}
-
-.team-member {
-    text-align: center;
-    width: 200px;
-}
-
-.team-member img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
+.image-container img {
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    max-height: 400px;
     object-fit: cover;
-    margin-bottom: 15px;
-    border: 3px solid var(--accent-yellow);
 }
 
-.team-member h3 {
+.attribution {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.attribution-link {
+    color: aquamarine;
+    text-decoration: none;
+}
+
+.attribution-link:hover {
+    text-decoration: underline;
+}
+
+/* Mission & Vision Section */
+.mission-vision-section {
+    padding: 80px 0;
+    background: rgba(0, 40, 85, 0.5);
+}
+
+.mission-card, .vision-card {
+    text-align: center;
+    padding: 40px 30px;
+}
+
+.icon-container {
+    font-size: 5rem;
     color: var(--accent-yellow);
-    margin-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+.mission-text, .vision-text {
+    font-size: 1.4rem;
+    line-height: 1.7;
+}
+
+/* Approach Section */
+.approach-section {
+    padding: 80px 0;
+}
+
+.approach-intro {
+    font-size: 1.57rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+}
+
+.approach-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.approach-item {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 15px;
+    padding: 30px;
+    border: 1px solid rgba(255, 195, 0, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.approach-item:hover {
+    transform: translateY(-5px);
+    background: rgba(0, 40, 85, 0.7);
+    border-color: var(--accent-yellow);
+}
+
+.approach-number {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent-yellow);
+    color: var(--primary-blue);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
     font-size: 1.2rem;
 }
 
-.team-member p {
-    font-size: 0.9rem;
-    color: var(--text-light);
+.approach-title {
+    color: var(--accent-yellow);
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    padding-top: 10px;
 }
 
-/* ============= Footer ============= */
-footer {
-    background: rgba(255, 196, 0, 0.75);
-    color: var(--primary-blue);
-    padding: 2rem 0;
-    margin-top: 60px;
+.approach-description {
+    line-height: 1.6;
+    font-size: 1.3rem;
+}
+
+/* Values Section */
+.values-section {
+    padding: 80px 0;
+    background: rgba(0, 40, 85, 0.5);
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.value-item {
     text-align: center;
+    padding: 30px 20px;
 }
 
-footer p {
-    margin: 0;
-    font-weight: 500;
+.value-icon {
+    font-size: 3rem;
+    color: var(--accent-yellow);
+    margin-bottom: 20px;
 }
 
-/* ============= Responsive Adjustments ============= */
+.value-title {
+    color: var(--accent-yellow);
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.value-description {
+    line-height: 1.6;
+    font-size: 1.3rem;
+}
+
+/* Locations Section */
+.locations-section {
+    padding: 80px 0;
+}
+
+.locations-text {
+    font-size: 1.57rem;
+    line-height: 1.7;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.world-icon {
+    margin-top: 30px;
+}
+
+/* ============= Responsive Design ============= */
 @media (max-width: 992px) {
-    .about-us-section {
-        padding: 60px 40px;
+    .section-main-title {
+        font-size: 2.5rem;
     }
     
-    .main-content {
-        flex-direction: column;
+    .content-container .lead {
+        font-size: 1.2rem;
     }
     
-    .image-container,
-    .text-container {
-        width: 100%;
-    }
-    
-    .image-container {
-        margin-bottom: 30px;
+    .approach-grid {
+        grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 768px) {
-    .about-us-section {
-        padding: 50px 20px;
+    .about-section {
+        padding: 100px 0 60px;
     }
     
-    .text-container h2 {
-        font-size: 2rem;
+    .section-main-title {
+        font-size: 2.2rem;
     }
     
-    .team-member {
-        width: 150px;
+    .mission-vision-section,
+    .approach-section,
+    .values-section,
+    .locations-section {
+        padding: 60px 0;
     }
     
-    .team-member img {
-        width: 100px;
-        height: 100px;
+    .values-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
 }
 
 @media (max-width: 576px) {
-    .about-us-section {
-        padding: 40px 15px;
+    .section-main-title {
+        font-size: 2rem;
     }
     
-    .text-container h2 {
-        font-size: 1.8rem;
+    .content-container .lead {
+        font-size: 1.1rem;
     }
     
-    .team-row {
-        flex-direction: column;
-        align-items: center;
+    .approach-item {
+        padding: 25px 20px;
     }
     
-    .team-member {
-        width: 100%;
-        max-width: 200px;
+    .mission-card, .vision-card {
+        padding: 30px 20px;
     }
 }
