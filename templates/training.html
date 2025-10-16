@@ -346,50 +346,56 @@
                 <h2 class="form-title text-center" style="color: #FFC300;">How to Book</h2>
                 <p class="text-center mb-4 lead">Use the form below or the <a href="Bookus.html" style="color: #FFC300;">Contact page</a>. Share objectives, audience, preferred format, timelines, and any sector focus. We will propose an agenda and deliverables that fit your context.</p>
                 
-                <form id="booking-form" data-api-endpoint="/api/trainings/book">
-                    <div class="row mb-3">
-                        <div class="form-group col-md-6">
-                            <label for="name">Your Full Name:</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="email">Email Address:</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-3">
-                        <div class="form-group col-md-6">
-                            <label for="organization">Organization/Affiliation:</label>
-                            <input type="text" class="form-control" id="organization" name="organization">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="trainingOfInterest">Training Track of Interest:</label>
-                            <select class="form-control" id="trainingOfInterest" name="trainingOfInterest" required>
-                                <option value="">Select a Flagship Track...</option>
-                                <option value="DCED systems MEL">DCED systems MEL</option>
-                                <option value="MSD and MSR for program teams">MSD and MSR for program teams</option>
-                                <option value="Evaluations and evidence design">Evaluations and evidence design</option>
-                                <option value="Jobs measurement frameworks">Jobs measurement frameworks</option>
-                                <option value="Climate MRV">Climate MRV</option>
-                                <option value="ESG frameworks and reporting">ESG frameworks and reporting</option>
-                                <option value="Capital mobilization and impact investing tracking">Capital mobilization and impact investing tracking</option>
-                                <option value="Statistics and data for decision makers">Statistics and data for decision makers</option>
-                                <option value="TPM excellence">TPM excellence</option>
-                                <option value="Inclusion, gender, and poverty measurement">Inclusion, gender, and poverty measurement</option>
-                                <option value="Value for money">Value for money</option>
-                                <option value="General Inquiry">General Inquiry</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group mb-4">
-                        <label for="bookingDetails">Details (Objectives, Audience, Format, Timelines):</label>
-                        <textarea class="form-control" id="bookingDetails" name="bookingDetails" rows="4" required placeholder="Please provide details on your objectives, intended audience, preferred format (masterclass, modular, clinic), and desired timelines."></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn-submit">Submit Booking Inquiry</button>
-                </form>
+                <form name="booking-form" method="POST" data-netlify="true">
+  <!-- Hidden input for Netlify form name -->
+  <input type="hidden" name="form-name" value="booking-form" />
+
+  <!-- Honeypot field for spam protection -->
+  <input type="text" name="bot-field" style="display:none;" />
+
+  <div class="row mb-3">
+    <div class="form-group col-md-6">
+      <label for="name">Your Full Name:</label>
+      <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="email">Email Address:</label>
+      <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="form-group col-md-6">
+      <label for="organization">Organization/Affiliation:</label>
+      <input type="text" class="form-control" id="organization" name="organization">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="trainingOfInterest">Training Track of Interest:</label>
+      <select class="form-control" id="trainingOfInterest" name="trainingOfInterest" required>
+        <option value="">Select a Flagship Track...</option>
+        <option value="DCED systems MEL">DCED systems MEL</option>
+        <option value="MSD and MSR for program teams">MSD and MSR for program teams</option>
+        <option value="Evaluations and evidence design">Evaluations and evidence design</option>
+        <option value="Jobs measurement frameworks">Jobs measurement frameworks</option>
+        <option value="Climate MRV">Climate MRV</option>
+        <option value="ESG frameworks and reporting">ESG frameworks and reporting</option>
+        <option value="Capital mobilization and impact investing tracking">Capital mobilization and impact investing tracking</option>
+        <option value="Statistics and data for decision makers">Statistics and data for decision makers</option>
+        <option value="TPM excellence">TPM excellence</option>
+        <option value="Inclusion, gender, and poverty measurement">Inclusion, gender, and poverty measurement</option>
+        <option value="Value for money">Value for money</option>
+        <option value="General Inquiry">General Inquiry</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group mb-4">
+    <label for="bookingDetails">Details (Objectives, Audience, Format, Timelines):</label>
+    <textarea class="form-control" id="bookingDetails" name="bookingDetails" rows="4" required placeholder="Please provide details on your objectives, intended audience, preferred format (masterclass, modular, clinic), and desired timelines."></textarea>
+  </div>
+
+  <button type="submit" class="btn-submit">Submit Booking Inquiry</button>
+</form>
             </div>
         </div>
     </section>
