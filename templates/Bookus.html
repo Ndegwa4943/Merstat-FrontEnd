@@ -43,87 +43,86 @@
     </section>
 
 <div class="container">
-    <!-- Public Form Section -->
-    <div id="publicForm">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="form-container">
-                    <h2 class="section-title">Book Our Services</h2>
-                    <!-- Add form ID and data-api-endpoint attribute -->
-                    <form id="service-form" data-api-endpoint="/api/services/request">
-                        <div class="row mb-3">
-                            <div class="col-md-6 mb-4">
-                                <label for="companyName" class="form-label">Company Name</label>
-                                <!-- Add name attribute -->
-                                <input type="text" class="form-control" id="companyName" name="companyName" placeholder="Company Name" required>
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <label for="contactPerson" class="form-label">Contact Person</label>
-                                <!-- Add name attribute -->
-                                <input type="text" class="form-control" id="contactPerson" name="contactPerson" placeholder="Full Name" required>
-                            </div>
-                        </div>
+  <!-- Public Form Section -->
+  <div id="publicForm">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="form-container">
+          <h2 class="section-title">Book Our Services</h2>
 
-                        <div class="row mb-3">
-                            <div class="col-md-6 mb-4">
-                                <label for="email" class="form-label">Email Address</label>
-                                <!-- Add name attribute -->
-                                <input type="email" class="form-control" id="email" name="email" placeholder="contact@company.com" required>
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <label for="phone" class="form-label">Contact Number</label>
-                                <!-- Add name attribute -->
-                                <input type="tel" class="form-control" id="phone" name="phone" placeholder="+254 712 345 678" required>
-                            </div>
-                        </div>
+          <!-- Netlify Form Setup -->
+          <form name="service-form" method="POST" data-netlify="true">
+            <!-- Hidden input for Netlify form name -->
+            <input type="hidden" name="form-name" value="service-form" />
 
-                        <div class="row mb-3">
-                            <div class="col-md-6 mb-4">
-                                <label for="serviceType" class="form-label">Select Service</label>
-                                <!-- Add name attribute -->
-                                <select class="form-select" id="serviceType" name="serviceType" required>
-                                    <option value="" selected disabled>Choose service...</option>
-                                    <option value="Monitoring and Evaluation">Monitoring and Evaluation</option>
-                                    <option value="Research and Statistics">Research and Statistics</option>
-                                    <option value="Capacity Building">Capacity Building</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <label for="timeline" class="form-label">Project Timeline</label>
-                                <!-- Add name attribute -->
-                                <input type="text" class="form-control" id="timeline" name="timeline" placeholder="e.g., 3 months" required>
-                            </div>
-                        </div>
+            <!-- Honeypot field for spam protection -->
+            <input type="text" name="bot-field" style="display:none;" />
 
-                        <div class="mb-4">
-                            <label for="projectDescription" class="form-label">Project Requirements</label>
-                            <!-- Add name attribute -->
-                            <textarea class="form-control" id="projectDescription" name="projectDescription" rows="4" placeholder="Describe your specific needs and objectives" required></textarea>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="budgetRange" class="form-label">Budget Range (KES)</label>
-                            <!-- Add name attribute -->
-                            <input type="text" class="form-control" id="budgetRange" name="budgetRange" placeholder="e.g., 500,000 - 1,000,000">
-                        </div>
-
-                        <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-paper-plane me-2"></i>Submit Request
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                
-                <!-- Admin Access Note -->
-                <div class="text-center mt-4">
-                    <p class="text-light" style="opacity: 0.7;">
-                        <i class="fas fa-lock me-2"></i>Admin access available for authorized personnel
-                    </p>
-                </div>
+            <div class="row mb-3">
+              <div class="col-md-6 mb-4">
+                <label for="companyName" class="form-label">Company Name</label>
+                <input type="text" class="form-control" id="companyName" name="companyName" placeholder="Company Name" required>
+              </div>
+              <div class="col-md-6 mb-4">
+                <label for="contactPerson" class="form-label">Contact Person</label>
+                <input type="text" class="form-control" id="contactPerson" name="contactPerson" placeholder="Full Name" required>
+              </div>
             </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6 mb-4">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="contact@company.com" required>
+              </div>
+              <div class="col-md-6 mb-4">
+                <label for="phone" class="form-label">Contact Number</label>
+                <input type="tel" class="form-control" id="phone" name="phone" placeholder="+254 712 345 678" required>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6 mb-4">
+                <label for="serviceType" class="form-label">Select Service</label>
+                <select class="form-select" id="serviceType" name="serviceType" required>
+                  <option value="" selected disabled>Choose service...</option>
+                  <option value="Monitoring and Evaluation">Monitoring and Evaluation</option>
+                  <option value="Research and Statistics">Research and Statistics</option>
+                  <option value="Capacity Building">Capacity Building</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-4">
+                <label for="timeline" class="form-label">Project Timeline</label>
+                <input type="text" class="form-control" id="timeline" name="timeline" placeholder="e.g., 3 months" required>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label for="projectDescription" class="form-label">Project Requirements</label>
+              <textarea class="form-control" id="projectDescription" name="projectDescription" rows="4" placeholder="Describe your specific needs and objectives" required></textarea>
+            </div>
+
+            <div class="mb-4">
+              <label for="budgetRange" class="form-label">Budget Range (KES)</label>
+              <input type="text" class="form-control" id="budgetRange" name="budgetRange" placeholder="e.g., 500,000 - 1,000,000">
+            </div>
+
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-primary btn-lg">
+                <i class="fas fa-paper-plane me-2"></i>Submit Request
+              </button>
+            </div>
+          </form>
         </div>
+
+        <!-- Admin Access Note -->
+        <div class="text-center mt-4">
+          <p class="text-light" style="opacity: 0.7;">
+            <i class="fas fa-lock me-2"></i>Admin access available for authorized personnel
+          </p>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- Footer -->
