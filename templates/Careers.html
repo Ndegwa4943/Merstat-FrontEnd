@@ -336,64 +336,74 @@
                 <p class="mb-4">We value capability and integrity. We are open to non linear career paths and strong applied skills.</p>
 
                 <h3 class="mt-4" style="color: #FFC300;">General Application Submission</h3>
-                <form id="career-form" data-api-endpoint="/api/careers/apply">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="firstName">First Name</label>
-                                <input type="text" class="form-control" id="firstName" name="firstName" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="lastName">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" name="lastName" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="email">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" class="form-control" id="phone" name="phone">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-group">
-                            <label for="position">Talent Pool / Area of Interest</label>
-                            <select class="form-select" id="position" name="position" required>
-                                <option value="">Select your best fit talent pool</option>
-                                <option>DCED Systems MEL</option>
-                                <option>Third Party Monitoring</option>
-                                <option>Climate MRV</option>
-                                <option>Jobs and Inclusion</option>
-                                <option>Health Systems Strengthening</option>
-                                <option>Evaluations and Research Roster</option>
-                                <option>Other/General Application</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-group">
-                            <label for="resume">Upload Resume</label>
-                            <input class="form-control" type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-group">
-                            <label for="message">Cover Note (Availability and Preferred Engagement Type)</label>
-                            <textarea class="form-control" id="message" name="message" rows="4" placeholder="Tell us about your skills, experience, location, availability, and preferred engagement type (full-time, project-based, etc.)."></textarea>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn-submit">Submit Application</button>
-                </form>
+    <form name="career-form" method="POST" data-netlify="true" netlify enctype="multipart/form-data">
+    <!-- Hidden input for Netlify form name -->
+    <input type="hidden" name="form-name" value="career-form" />
+
+    <!-- Honeypot field for spam protection -->
+    <input type="text" name="bot-field" style="display:none;" />
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" required>
+        </div>
+        </div>
+        <div class="col-md-6">
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" class="form-control" id="lastName" name="lastName" required>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        </div>
+        <div class="col-md-6">
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" class="form-control" id="phone" name="phone">
+        </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-group">
+        <label for="position">Talent Pool / Area of Interest</label>
+        <select class="form-select" id="position" name="position" required>
+            <option value="">Select your best fit talent pool</option>
+            <option>DCED Systems MEL</option>
+            <option>Third Party Monitoring</option>
+            <option>Climate MRV</option>
+            <option>Jobs and Inclusion</option>
+            <option>Health Systems Strengthening</option>
+            <option>Evaluations and Research Roster</option>
+            <option>Other/General Application</option>
+        </select>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-group">
+        <label for="resume">Upload Resume</label>
+        <input class="form-control" type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-group">
+        <label for="message">Cover Note (Availability and Preferred Engagement Type)</label>
+        <textarea class="form-control" id="message" name="message" rows="4" placeholder="Tell us about your skills, experience, location, availability, and preferred engagement type (full-time, project-based, etc.)."></textarea>
+        </div>
+    </div>
+
+    <button type="submit" class="btn-submit">Submit Application</button>
+    </form>
 
                 <h3 class="mt-5" style="color: #FFC300;">Inclusion and Accessibility</h3>
                 <p>We are an equal opportunity employer. We welcome applications from women and youth and people with disabilities and underrepresented groups. If you need a reasonable accommodation during the process, email <a href="mailto:careersmerstatdev.com@outlook.com" style="color: #FFC300;">careersmerstatdev.com@outlook.com</a> and we will support you.</p>
