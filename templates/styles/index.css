@@ -6,7 +6,7 @@
 
 .hero h1 {
     font-weight: 800;
-    font-size: 3.2rem;
+    font-size: 3rem;
     margin-bottom: 30px;
     color: var(--accent-yellow);
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
@@ -14,7 +14,7 @@
 }
 
 .hero p {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     max-width: 1000px;
     margin: 0 auto 40px;
     font-weight: 300;
@@ -91,7 +91,7 @@
 }
 
 .expertise-card p {
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 .expertise-card:hover {

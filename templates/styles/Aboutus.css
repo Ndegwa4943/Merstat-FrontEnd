@@ -13,7 +13,7 @@
 }
 
 .content-container .lead {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     line-height: 1.8;
     margin-bottom: 20px;
 }
@@ -27,7 +27,7 @@
 
 .attribution {
     color: var(--text-light);
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     opacity: 0.8;
 }
 
@@ -68,7 +68,7 @@
 }
 
 .approach-intro {
-    font-size: 1.57rem;
+    font-size: 1.37rem;
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
@@ -110,7 +110,7 @@
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 1.0rem;
 }
 
 .approach-title {

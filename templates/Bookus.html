@@ -76,7 +76,7 @@
               </div>
               <div class="col-md-6 mb-4">
                 <label for="phone" class="form-label">Contact Number</label>
-                <input type="tel" class="form-control" id="phone" name="phone" placeholder="+254 712 345 678" required>
+                <input type="tel" class="form-control" id="phone" name="phone" placeholder="+254 712 345 678">
               </div>
             </div>
 
@@ -88,11 +88,19 @@
                   <option value="Monitoring and Evaluation">Monitoring and Evaluation</option>
                   <option value="Research and Statistics">Research and Statistics</option>
                   <option value="Capacity Building">Capacity Building</option>
+                  <option value="Data Analysis and Reporting">Data Analysis and Reporting</option>
+                  <option value="Other">Other</option>
                 </select>
+
+                <!-- shown when user picks "Other" -->
+                <div id="otherServiceGroup" style="display:none; margin-top:0.75rem;">
+                  <label for="serviceTypeOther" class="form-label">Please specify</label>
+                  <input type="text" id="serviceTypeOther" class="form-control" placeholder="Describe the service">
+                </div>
               </div>
               <div class="col-md-6 mb-4">
                 <label for="timeline" class="form-label">Project Timeline</label>
-                <input type="text" class="form-control" id="timeline" name="timeline" placeholder="e.g., 3 months" required>
+                <input type="text" class="form-control" id="timeline" name="timeline" placeholder="e.g., 3 months">
               </div>
             </div>
 
@@ -145,7 +153,7 @@
                 <ul class="list-unstyled">
                     <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> Westlands, Nairobi, Kenya</li>
                     <li class="mb-2"><i class="fas fa-phone me-2"></i> +254 700 123 456</li>
-                    <li class="mb-2"><i class="fas fa-envelope me-2"></i> info@merstat.com</li>
+                    <li class="mb-2"><i class="fas fa-envelope me-2"></i>careersmerstatdev.com@outlook.com </li>
                     <li class="mb-2"><i class="fas fa-clock me-2"></i> Mon-Fri: 9:00 AM - 5:00 PM</li>
                 </ul>
             </div>
@@ -195,6 +203,47 @@
                 this.parentElement.classList.remove('focused');
             });
         });
+    </script>
+    <script>
+      (function(){
+        const form = document.querySelector('form[name="service-form"]');
+        const select = document.getElementById('serviceType');
+        const otherGroup = document.getElementById('otherServiceGroup');
+        const otherInput = document.getElementById('serviceTypeOther');
+
+        // show/hide "other" input
+        select.addEventListener('change', () => {
+          if (select.value === 'Other') {
+            otherGroup.style.display = 'block';
+            otherInput.setAttribute('required', 'required');
+            otherInput.focus();
+          } else {
+            otherGroup.style.display = 'none';
+            otherInput.removeAttribute('required');
+            otherInput.value = '';
+          }
+        });
+
+        // before submit, if Other selected, replace submitted value with user text
+        form.addEventListener('submit', (e) => {
+          if (select.value === 'Other') {
+            const v = otherInput.value.trim();
+            if (!v) {
+              e.preventDefault();
+              otherInput.focus();
+              return;
+            }
+            // disable select so it doesn't submit "Other"
+            select.disabled = true;
+            // add hidden input with the actual service string
+            const hidden = document.createElement('input');
+            hidden.type = 'hidden';
+            hidden.name = 'serviceType';
+            hidden.value = v;
+            form.appendChild(hidden);
+          }
+        });
+      })();
     </script>
     <script src="/static/js/formHandler.js"></script>
 </body>

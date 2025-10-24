@@ -201,6 +201,21 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
         }
 
+
+        /* Style the dropdown itself */
+
+/* Style the dropdown options */
+#serviceType option {
+  background-color:  #003366;;
+  color: mintcream;
+}
+
+/* Hover effect for options (limited support in some browsers) */
+#serviceType option:hover {
+  background-color: #e0ac00;
+  color:  #003366;;
+}
+
         .status-badge {
             padding: 5px 15px;
             border-radius: 20px;
