@@ -1,0 +1,41 @@
+---
+/**
+ * <CaseStudyCard> — Card used on the results/methods page for the
+ * Proofmap six-block case studies.
+ */
+interface Props {
+  title: string;
+  partnerDescriptor: string;
+  sector: string;
+  geography: string;
+  year: number;
+  href: string;
+  snapshot: string;
+}
+const { title, partnerDescriptor, sector, geography, year, href, snapshot } = Astro.props;
+---
+
+<article class="case-card glass-card">
+  <header>
+    <p class="case-meta">
+      <span class="badge">{sector}</span>
+      <span class="badge badge--muted">{geography}</span>
+      <span class="badge badge--muted">{year}</span>
+    </p>
+    <h3 class="case-title"><a href={href}>{title}</a></h3>
+    <p class="case-partner">For {partnerDescriptor}.</p>
+  </header>
+  <p class="case-snapshot">{snapshot}</p>
+  <p><a class="case-link" href={href}>Read the case study →</a></p>
+</article>
+
+<style>
+  .case-card { display: flex; flex-direction: column; gap: var(--space-3); }
+  .case-meta { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .case-title { margin: 0; font-size: var(--fs-xl); }
+  .case-title a { color: var(--color-accent); text-decoration: none; }
+  .case-title a:hover, .case-title a:focus-visible { text-decoration: underline; }
+  .case-partner { color: var(--color-text-muted); margin: 0; font-style: italic; }
+  .case-snapshot { margin: 0; line-height: var(--lh-normal); }
+  .case-link { color: var(--color-accent); font-weight: 600; }
+</style>

@@ -1,0 +1,24 @@
+# CODEOWNERS — auto-assigns reviewers for each path.
+# https://docs.github.com/repositories/working-with-files/understanding-repository-structure/file-path-on-GitHub
+
+# Default: repo admins
+*                                   @Ndegwa4943
+
+# Astro / content (engineering)
+/src/                               @Ndegwa4943
+/astro.config.mjs                   @Ndegwa4943
+/tsconfig.json                      @Ndegwa4943
+/public/admin/                      @Ndegwa4943
+
+# CI / deployment (engineering)
+/.github/                           @Ndegwa4943
+/netlify.toml                       @Ndegwa4943
+/netlify/                           @Ndegwa4943
+
+# Legal & security (founder)
+/LICENSE                            @Ndegwa4943
+/SECURITY.md                        @Ndegwa4943
+/docs/                              @Ndegwa4943
+
+# Content
+/src/content/                       @Ndegwa4943
