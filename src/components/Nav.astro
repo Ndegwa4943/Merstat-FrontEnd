@@ -23,7 +23,11 @@ const isActive = (href: string) => {
     </a>
 
     <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true" />
-    <label for="nav-toggle" class="nav-toggle-btn" aria-label={t('nav.menu')}>
+    <!-- The label role prohibits aria-label (WCAG 4.1.2 / axe
+         aria-prohibited-attr), so the accessible name comes from a
+         visually-hidden span inside the control instead. -->
+    <label for="nav-toggle" class="nav-toggle-btn">
+      <span class="sr-only">{t('nav.menu')}</span>
       <span></span><span></span><span></span>
     </label>
 
@@ -140,7 +144,9 @@ const isActive = (href: string) => {
     cursor: pointer;
   }
 
-  .nav-toggle-btn span {
+  /* Scoped with :not(.sr-only) — the accessible-name span must keep the
+     .sr-only clipping rather than being stretched into a hamburger bar. */
+  .nav-toggle-btn span:not(.sr-only) {
     display: block;
     width: 100%;
     height: 2px;
@@ -171,13 +177,14 @@ const isActive = (href: string) => {
       max-height: 80vh;
       overflow: auto;
     }
-    .nav-toggle:checked + .nav-toggle-btn span:nth-child(1) {
+    /* nth-child counts the .sr-only name span, so the bars are 2/3/4. */
+    .nav-toggle:checked + .nav-toggle-btn span:nth-child(2) {
       transform: translateY(8px) rotate(45deg);
     }
-    .nav-toggle:checked + .nav-toggle-btn span:nth-child(2) {
+    .nav-toggle:checked + .nav-toggle-btn span:nth-child(3) {
       opacity: 0;
     }
-    .nav-toggle:checked + .nav-toggle-btn span:nth-child(3) {
+    .nav-toggle:checked + .nav-toggle-btn span:nth-child(4) {
       transform: translateY(-8px) rotate(-45deg);
     }
     .nav-link {

@@ -45,8 +45,15 @@ const { title, partnerDescriptor, sector, geography, year, href, snapshot } = As
     font-size: var(--fs-xl);
   }
   .case-title a {
-    color: var(--color-accent);
+    /* --color-accent scores 4.27:1 on the card surface (#2f5e84), below
+       the 4.5:1 WCAG AA floor for body-size text. */
+    color: var(--color-accent-text);
     text-decoration: none;
+    /* WCAG 2.2 target size: as an inline link the hit area collapsed to
+       the text line-height. inline-block + vertical padding clears the
+       24px minimum without changing the visual layout. */
+    display: inline-block;
+    padding: var(--space-2) 0;
   }
   .case-title a:hover,
   .case-title a:focus-visible {
@@ -62,7 +69,21 @@ const { title, partnerDescriptor, sector, geography, year, href, snapshot } = As
     line-height: var(--lh-normal);
   }
   .case-link {
-    color: var(--color-accent);
+    /* No accent tone clears WCAG AA on this card surface (#427090):
+       #ffc300 measures 3.30:1 and #ffd866 3.86:1. Inverting instead —
+       accent background with primary text — scores 7.84:1, and matches
+       the .btn--primary treatment used elsewhere. */
+    display: inline-block;
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-accent);
+    color: var(--color-text-inverse);
     font-weight: 600;
+    text-decoration: none;
+    border-radius: var(--radius-pill);
+  }
+  .case-link:hover,
+  .case-link:focus-visible {
+    background: var(--color-accent-700);
+    color: var(--color-text-inverse);
   }
 </style>

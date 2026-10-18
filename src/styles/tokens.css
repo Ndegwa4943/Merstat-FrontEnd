@@ -9,6 +9,11 @@
   --color-primary-900: #001f3f;
   --color-accent: #ffc300;
   --color-accent-700: #e0ac00;
+  /* Lightened accent for small text on tinted surfaces (badges, chips).
+     #ffc300 on a 15%-accent tint measures 4.17:1 and fails WCAG AA for
+     body copy; this measures 4.87:1. Use --color-accent for large text
+     and for text on the primary background, where it scores 7.84:1. */
+  --color-accent-text: #ffd866;
   --color-mint: #cef4eb;
 
   /* Semantic tokens — use these in components */
@@ -17,7 +22,9 @@
   --color-bg-surface: rgba(206, 244, 235, 0.08);
   --color-bg-overlay: rgba(206, 244, 235, 0.12);
   --color-text: var(--color-mint);
-  --color-text-muted: rgba(206, 244, 235, 0.7);
+  /* 0.8 rather than 0.7: at 0.7 the mint composites to 4.43:1 over the
+     lighter card surface (#20507a), just under the 4.5:1 AA floor. */
+  --color-text-muted: rgba(206, 244, 235, 0.8);
   --color-text-inverse: var(--color-primary);
   --color-link: var(--color-accent);
   --color-link-hover: var(--color-accent-700);
