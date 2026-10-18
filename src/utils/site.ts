@@ -8,11 +8,11 @@ export const SITE = {
   tagline: 'Building programs. Measuring change. Sustaining impact.',
   description:
     'Merstat is a development partner that designs programs, strengthens systems, and provides independent monitoring across Africa, the Middle East, and Asia. Specialists in MEL, third-party monitoring, ESG, climate MRV, jobs measurement, and capacity building.',
-  url: process.env.SITE_URL || 'https://merstat.com',
+  url: process.env.SITE_URL || 'https://merstat.org',
   locale: 'en',
   foundingDate: '2015',
-  email: 'contact@merstat.com',
-  careersEmail: 'careers@merstat.com',
+  email: 'contact@merstat.org',
+  careersEmail: 'careers@merstat.org',
   phone: '+254 728 893 405',
   phoneRaw: '+254728893405',
   address: {

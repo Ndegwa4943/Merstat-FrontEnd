@@ -40,7 +40,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          SITE_URL: https://merstat.com
+          SITE_URL: https://merstat.org
 
       - name: Deploy to Netlify
         id: deploy

@@ -106,7 +106,7 @@ There are three ways to edit content:
 
 ### 1. Sveltia CMS (recommended for non-developers)
 
-Visit `https://merstat.com/admin/`. Log in with GitHub. Edit services,
+Visit `https://merstat.org/admin/`. Log in with GitHub. Edit services,
 case studies, methods, training tracks, jobs, posts, and team members in a
 friendly UI. Changes commit to `main` and trigger a deploy.
 
@@ -194,7 +194,7 @@ Three workflows drive the project:
 
 ### Branch protection (recommended)
 
-On `https://github.com/Ndegwa4943/Merstat-FrontEnd/settings/branches`:
+On `https://github.com/MUNENE1212/Merstat-FrontEnd/settings/branches`:
 
 - Protect `main`.
 - Require pull request before merging.
@@ -222,7 +222,7 @@ presigned URL — keeping PII out of Netlify's database.
 
 - `PUBLIC_TURNSTILE_SITEKEY` — Cloudflare Turnstile site key (public)
 - `TURNSTILE_SECRET_KEY` — Cloudflare Turnstile secret (for server-side validation)
-- `PUBLIC_PLAUSIBLE_DOMAIN` — `merstat.com`
+- `PUBLIC_PLAUSIBLE_DOMAIN` — `merstat.org`
 - `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` — for CV uploads
 
 ## Localisation

@@ -2,23 +2,23 @@
 # https://docs.github.com/repositories/working-with-files/understanding-repository-structure/file-path-on-GitHub
 
 # Default: repo admins
-*                                   @Ndegwa4943
+*                                   @MUNENE1212
 
 # Astro / content (engineering)
-/src/                               @Ndegwa4943
-/astro.config.mjs                   @Ndegwa4943
-/tsconfig.json                      @Ndegwa4943
-/public/admin/                      @Ndegwa4943
+/src/                               @MUNENE1212
+/astro.config.mjs                   @MUNENE1212
+/tsconfig.json                      @MUNENE1212
+/public/admin/                      @MUNENE1212
 
 # CI / deployment (engineering)
-/.github/                           @Ndegwa4943
-/netlify.toml                       @Ndegwa4943
-/netlify/                           @Ndegwa4943
+/.github/                           @MUNENE1212
+/netlify.toml                       @MUNENE1212
+/netlify/                           @MUNENE1212
 
 # Legal & security (founder)
-/LICENSE                            @Ndegwa4943
-/SECURITY.md                        @Ndegwa4943
-/docs/                              @Ndegwa4943
+/LICENSE                            @MUNENE1212
+/SECURITY.md                        @MUNENE1212
+/docs/                              @MUNENE1212
 
 # Content
-/src/content/                       @Ndegwa4943
+/src/content/                       @MUNENE1212

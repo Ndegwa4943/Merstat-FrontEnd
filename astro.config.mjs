@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: process.env.SITE_URL || 'https://merstat.com',
+  site: process.env.SITE_URL || 'https://merstat.org',
 
   // Static output (SSG) with Netlify Functions for the R2 CV upload.
   // Set output: 'hybrid' only if you need SSR for authenticated routes.

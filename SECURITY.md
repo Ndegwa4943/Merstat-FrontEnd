@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-Email **security@merstat.com** with a description and reproduction steps.
+Email **security@merstat.org** with a description and reproduction steps.
 We will respond within 3 working days.
 
 ## Out of scope

@@ -23,6 +23,18 @@ to bypass CI, use option 1.
 Netlify → Site settings → Build & deploy → Continuous deployment →
 "Stop auto publishing" → manually publish a specific branch or commit.
 
+## DNS rollback
+
+If the domain stops resolving after the Netlify name-server cutover:
+
+1. Shujaa client area → `merstat.org` → **Nameservers**.
+2. Switch back to Shujaa's default nameservers (or the previous custom
+   ones) and save.
+3. Propagation is 5 minutes to 24 hours.
+
+Record the pre-cutover name servers before changing them — see
+`docs/DEPLOYMENT.md` Part 3.
+
 ## Hot fixes
 
 For an emergency, ship the smallest possible change as a hotfix branch:
