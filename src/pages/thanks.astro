@@ -18,9 +18,15 @@ const title = titles[intent] ?? titles.general;
 <BaseLayout title={`${title} — ${SITE.shortName}`} description={title} noindex>
   <section class="section">
     <div class="container container-narrow" style="text-align: center;">
-      <i class="fa-solid fa-circle-check" style="font-size: 4rem; color: var(--color-accent);" aria-hidden="true"></i>
+      <i
+        class="fa-solid fa-circle-check"
+        style="font-size: 4rem; color: var(--color-accent);"
+        aria-hidden="true"></i>
       <h1>{title}</h1>
-      <p class="prose">Your message is on its way. We will reply within one working day. If you don't hear from us, check spam or email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+      <p class="prose">
+        Your message is on its way. We will reply within one working day. If you don't hear from us,
+        check spam or email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      </p>
 
       <div class="grid grid-2 cv-auto" style="margin-top: var(--space-7); text-align: left;">
         <article class="glass-card">
@@ -34,7 +40,10 @@ const title = titles[intent] ?? titles.general;
         </article>
         <article class="glass-card">
           <h3>About us</h3>
-          <p>Merstat is a development partner that designs programs, strengthens systems, and provides independent monitoring. We reply within one working day.</p>
+          <p>
+            Merstat is a development partner that designs programs, strengthens systems, and
+            provides independent monitoring. We reply within one working day.
+          </p>
         </article>
       </div>
     </div>

@@ -1,6 +1,6 @@
 ---
-title: "About Merstat"
-description: "MERSTAT is a development partner bringing together program design, implementation, independent monitoring, and advanced evidence systems to drive sustainable and inclusive change."
+title: 'About Merstat'
+description: 'MERSTAT is a development partner bringing together program design, implementation, independent monitoring, and advanced evidence systems to drive sustainable and inclusive change.'
 locale: en
 draft: false
 ---

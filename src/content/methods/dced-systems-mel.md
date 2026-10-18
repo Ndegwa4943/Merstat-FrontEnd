@@ -1,8 +1,8 @@
 ---
-title: "DCED Systems MEL"
-summary: "DCED-compliant MEL systems with audit-ready documentation"
-description: "Results chains matched to business models and boundaries. Measurement plans with clear indicators, roles, and data sources."
-icon: "fa-gears"
+title: 'DCED Systems MEL'
+summary: 'DCED-compliant MEL systems with audit-ready documentation'
+description: 'Results chains matched to business models and boundaries. Measurement plans with clear indicators, roles, and data sources.'
+icon: 'fa-gears'
 order: 10
 ---
 

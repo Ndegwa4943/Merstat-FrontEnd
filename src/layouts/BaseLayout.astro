@@ -30,7 +30,7 @@ interface Props {
 const props = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang={props.locale ?? 'en'} dir="ltr">
   <head>
     <SEO {...props} />
@@ -115,9 +115,9 @@ const props = Astro.props;
     background: linear-gradient(
       to bottom,
       rgba(0, 18, 41, 0.55) 0%,
-      rgba(0, 18, 41, 0.30) 30%,
-      rgba(0, 18, 41, 0.00) 60%,
-      rgba(0, 18, 41, 0.30) 100%
+      rgba(0, 18, 41, 0.3) 30%,
+      rgba(0, 18, 41, 0) 60%,
+      rgba(0, 18, 41, 0.3) 100%
     );
     z-index: -1;
     pointer-events: none;
@@ -128,7 +128,12 @@ const props = Astro.props;
     the brand-yellow heading never disappears on a bright patch of
     the image, even if the overlay is ever weakened by a future change.
   */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     text-shadow: var(--shadow-text);
   }
 </style>

@@ -134,28 +134,28 @@ Edit any `.md` file in `src/content/` via the GitHub web UI.
 
 ```md
 ---
-title: "My Service"
-shortTitle: "My Service"
-tagline: "A clear value-prop sentence"
-summary: "1-2 sentences for cards"
-description: "Meta description (155 chars)"
-icon: "fa-leaf"
+title: 'My Service'
+shortTitle: 'My Service'
+tagline: 'A clear value-prop sentence'
+summary: '1-2 sentences for cards'
+description: 'Meta description (155 chars)'
+icon: 'fa-leaf'
 order: 50
-heroOutcome: "Outcome-led headline (Knapsack)"
-empathy: "1-2 sentence problem framing"
+heroOutcome: 'Outcome-led headline (Knapsack)'
+empathy: '1-2 sentence problem framing'
 outcomes:
-  - "Outcome bullet 1"
-  - "Outcome bullet 2"
+  - 'Outcome bullet 1'
+  - 'Outcome bullet 2'
 process:
-  - title: "Step 1"
-    body: "What happens in step 1"
-  - title: "Step 2"
-    body: "What happens in step 2"
+  - title: 'Step 1'
+    body: 'What happens in step 1'
+  - title: 'Step 2'
+    body: 'What happens in step 2'
 proof:
-  - "Trust bullet 1"
+  - 'Trust bullet 1'
 faqs:
-  - question: "Q?"
-    answer: "A."
+  - question: 'Q?'
+    answer: 'A.'
 ---
 
 Body content goes here as Markdown.
@@ -177,11 +177,11 @@ The repo enforces these budgets in CI (`lighthouserc.cjs`, `.pa11yci.json`):
 
 Three workflows drive the project:
 
-| Workflow | Triggers | What it does |
-| --- | --- | --- |
-| `ci.yml` | every push, every PR | install, lint, build, smoke test, a11y, Lighthouse |
-| `preview.yml` | every PR | builds and deploys a Netlify preview, comments the URL on the PR |
-| `deploy.yml` | push to `main` | builds and deploys to Netlify production (protected by GitHub environment) |
+| Workflow      | Triggers             | What it does                                                               |
+| ------------- | -------------------- | -------------------------------------------------------------------------- |
+| `ci.yml`      | every push, every PR | install, lint, build, smoke test, a11y, Lighthouse                         |
+| `preview.yml` | every PR             | builds and deploys a Netlify preview, comments the URL on the PR           |
+| `deploy.yml`  | push to `main`       | builds and deploys to Netlify production (protected by GitHub environment) |
 
 ### First-time setup
 

@@ -28,20 +28,26 @@ const breadcrumb = breadcrumbJsonLd([
       <header style="text-align: center; max-width: 70ch; margin-inline: auto;">
         <h1>Our professional services</h1>
         <p class="prose">
-          Merstat is a development partner that designs and delivers programs, provides independent monitoring, and builds advanced evidence systems. We integrate market systems thinking, DCED standards, climate MRV, ESG, jobs measurement, inclusion frameworks, and impact investing tools so partners can move from ideas to implementation and from data to decision.
+          Merstat is a development partner that designs and delivers programs, provides independent
+          monitoring, and builds advanced evidence systems. We integrate market systems thinking,
+          DCED standards, climate MRV, ESG, jobs measurement, inclusion frameworks, and impact
+          investing tools so partners can move from ideas to implementation and from data to
+          decision.
         </p>
       </header>
 
       <div class="grid grid-2 cv-auto" style="margin-top: var(--space-8);">
-        {services.map((s) => (
-          <ServiceCard
-            title={s.data.title}
-            tagline={s.data.tagline}
-            summary={s.data.summary}
-            icon={s.data.icon}
-            href={`/services/${s.id}/`}
-          />
-        ))}
+        {
+          services.map((s) => (
+            <ServiceCard
+              title={s.data.title}
+              tagline={s.data.tagline}
+              summary={s.data.summary}
+              icon={s.data.icon}
+              href={`/services/${s.id}/`}
+            />
+          ))
+        }
       </div>
     </div>
   </section>
@@ -52,7 +58,9 @@ const breadcrumb = breadcrumbJsonLd([
       <article class="glass-card">
         <h2>What you gain</h2>
         <p style="font-size: var(--fs-lg); max-width: 70ch; margin-inline: auto;">
-          A partner who designs programs you can deliver, builds systems your teams can run, and provides independent oversight you can trust. Evidence becomes a management asset, investments become accountable, and impact becomes sustainable.
+          A partner who designs programs you can deliver, builds systems your teams can run, and
+          provides independent oversight you can trust. Evidence becomes a management asset,
+          investments become accountable, and impact becomes sustainable.
         </p>
         <p style="margin-top: var(--space-5);">
           <a class="btn btn--primary btn--lg" href="/contact/">

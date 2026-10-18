@@ -135,8 +135,7 @@ export function jobPostingJsonLd(opts: {
     description: opts.description,
     datePosted: opts.datePosted,
     validThrough:
-      opts.validThrough ??
-      new Date(Date.now() + 90 * 24 * 3600 * 1000).toISOString().slice(0, 10),
+      opts.validThrough ?? new Date(Date.now() + 90 * 24 * 3600 * 1000).toISOString().slice(0, 10),
     employmentType: opts.employmentType,
     hiringOrganization: {
       '@type': 'Organization',

@@ -1,8 +1,8 @@
 ---
-title: "Attribution & Counterfactuals"
-summary: "Causal narratives linked to evidence"
-description: "Causal narratives linked to evidence. Counterfactual estimation when feasible. Documented assumptions and sensitivity checks."
-icon: "fa-link"
+title: 'Attribution & Counterfactuals'
+summary: 'Causal narratives linked to evidence'
+description: 'Causal narratives linked to evidence. Counterfactual estimation when feasible. Documented assumptions and sensitivity checks.'
+icon: 'fa-link'
 order: 40
 ---
 

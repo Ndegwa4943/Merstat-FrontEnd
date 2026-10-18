@@ -1,8 +1,8 @@
 ---
-title: "Assurance and Ethics"
-summary: "DCED compliance built by design"
-description: "DCED compliance is built by design. Research ethics approvals where required. Data protection and safeguarding applied consistently."
-icon: "fa-shield-halved"
+title: 'Assurance and Ethics'
+summary: 'DCED compliance built by design'
+description: 'DCED compliance is built by design. Research ethics approvals where required. Data protection and safeguarding applied consistently.'
+icon: 'fa-shield-halved'
 order: 100
 ---
 

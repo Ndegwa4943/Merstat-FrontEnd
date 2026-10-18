@@ -1,8 +1,8 @@
 ---
-title: "Health Systems Strengthening"
-summary: "RHIS prepared for analysis and visualisation"
-description: "Routine health information systems prepared for analysis and visualisation. Decision dashboards for quality, coverage, and equity."
-icon: "fa-heartbeat"
+title: 'Health Systems Strengthening'
+summary: 'RHIS prepared for analysis and visualisation'
+description: 'Routine health information systems prepared for analysis and visualisation. Decision dashboards for quality, coverage, and equity.'
+icon: 'fa-heartbeat'
 order: 60
 ---
 

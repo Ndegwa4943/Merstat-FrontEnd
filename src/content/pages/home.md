@@ -1,6 +1,6 @@
 ---
-title: "Home"
-description: "Merstat is a development partner that designs programs, strengthens systems, and provides independent monitoring across Africa, the Middle East, and Asia."
+title: 'Home'
+description: 'Merstat is a development partner that designs programs, strengthens systems, and provides independent monitoring across Africa, the Middle East, and Asia.'
 locale: en
 draft: false
 ---

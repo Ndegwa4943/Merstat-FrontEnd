@@ -1,8 +1,8 @@
 ---
-title: "ESG and Investment Tracking"
-summary: "Operational ESG embedded in routines"
-description: "ESG diagnostics and reporting tools that fit operations. Training for teams and boards to manage ESG through routine cycles."
-icon: "fa-hand-holding-heart"
+title: 'ESG and Investment Tracking'
+summary: 'Operational ESG embedded in routines'
+description: 'ESG diagnostics and reporting tools that fit operations. Training for teams and boards to manage ESG through routine cycles.'
+icon: 'fa-hand-holding-heart'
 order: 80
 ---
 

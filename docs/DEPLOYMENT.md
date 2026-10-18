@@ -8,16 +8,16 @@ for the DNS half.
 
 ## Part 1 — Code (already done in this repo)
 
-| What | Status |
-| --- | --- |
-| Canonical domain switched to `https://merstat.org` | done |
-| `astro.config.mjs` → `site:` | done |
-| `src/utils/site.ts` → `SITE.url`, emails | done |
-| `public/robots.txt`, `public/humans.txt` | done |
-| `public/admin/config.js` (Sveltia CMS) | done |
-| CI / deploy / preview workflows `SITE_URL` | done |
-| `netlify.toml` placeholder env vars removed | done |
-| Placeholder `R2_ENDPOINT` removed (would have broken the CV function) | done |
+| What                                                                  | Status |
+| --------------------------------------------------------------------- | ------ |
+| Canonical domain switched to `https://merstat.org`                    | done   |
+| `astro.config.mjs` → `site:`                                          | done   |
+| `src/utils/site.ts` → `SITE.url`, emails                              | done   |
+| `public/robots.txt`, `public/humans.txt`                              | done   |
+| `public/admin/config.js` (Sveltia CMS)                                | done   |
+| CI / deploy / preview workflows `SITE_URL`                            | done   |
+| `netlify.toml` placeholder env vars removed                           | done   |
+| Placeholder `R2_ENDPOINT` removed (would have broken the CV function) | done   |
 
 Verify locally before deploying:
 
@@ -37,7 +37,7 @@ grep -o 'https://merstat\.org' dist/sitemap-0.xml | head
    defaults and just confirm:
    - Build command: `npm run build`
    - Publish directory: `dist`
-   - Base directory: *(leave blank)*
+   - Base directory: _(leave blank)_
 4. Click **Deploy site**. You get a random URL like
    `https://brave-curie-12345.netlify.app`. It works immediately.
 5. Open **Site settings → Domain management → Add a domain** and type
@@ -83,10 +83,10 @@ Go back to **Netlify → your site → Domain management → DNS records**.
 
 Netlify usually pre-creates the apex + www records. Confirm these exist:
 
-| Type | Host | Value | TTL |
-| --- | --- | --- | --- |
-| A | `@` (apex) | *(Netlify's load balancer — auto-filled, leave it)* | 3600 |
-| CNAME | `www` | `<your-site>.netlify.app` | 3600 |
+| Type  | Host       | Value                                               | TTL  |
+| ----- | ---------- | --------------------------------------------------- | ---- |
+| A     | `@` (apex) | _(Netlify's load balancer — auto-filled, leave it)_ | 3600 |
+| CNAME | `www`      | `<your-site>.netlify.app`                           | 3600 |
 
 Then click **Check DNS configuration**. It goes green when propagation
 completes.
@@ -107,7 +107,7 @@ Until then the addresses in the site config are valid-looking but dead.
 
 ## Part 5 — Netlify: environment variables
 
-**Site settings → Environment variables.** Set these in the UI, *not* in
+**Site settings → Environment variables.** Set these in the UI, _not_ in
 `netlify.toml` (file-based values override the UI):
 
 ```

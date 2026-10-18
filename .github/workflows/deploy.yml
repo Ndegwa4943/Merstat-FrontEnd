@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: 'Git ref to deploy (branch, tag, or SHA). Defaults to main.'
+        description: "Git ref to deploy (branch, tag, or SHA). Defaults to main."
         required: false
-        default: 'main'
+        default: "main"
 
 # Never cancel an in-progress production deploy.
 concurrency:
@@ -29,10 +29,11 @@ jobs:
       url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
       - uses: actions/checkout@v4
-        with: { ref: ${{ github.event.inputs.ref || 'main' }} }
+        with:
+          ref: ${{ github.event.inputs.ref || 'main' }}
 
       - uses: actions/setup-node@v4
-        with: { node-version: '20', cache: 'npm' }
+        with: { node-version: "20", cache: "npm" }
 
       - name: Install
         run: npm ci --no-audit --prefer-offline --legacy-peer-deps
@@ -48,7 +49,7 @@ jobs:
         with:
           publish-dir: dist
           production-deploy: true
-          deploy-message: 'Deploy from ${{ github.sha }}'
+          deploy-message: "Deploy from ${{ github.sha }}"
           secrets: |
             NETLIFY_AUTH_TOKEN
             NETLIFY_SITE_ID

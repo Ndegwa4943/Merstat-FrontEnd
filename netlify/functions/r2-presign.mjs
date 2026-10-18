@@ -38,9 +38,7 @@ function jsonResponse(status, body) {
 }
 
 function sanitizeFilename(name) {
-  return name
-    .replace(/[^\w.\-]/g, '_')
-    .slice(-80) || 'upload';
+  return name.replace(/[^\w.\-]/g, '_').slice(-80) || 'upload';
 }
 
 async function signR2PutUrl({ key, contentType, expiresIn }) {
@@ -92,8 +90,7 @@ async function signR2PutUrl({ key, contentType, expiresIn }) {
 
   const { createHash, createHmac } = await import('node:crypto');
   const hashedCanonical = createHash('sha256').update(canonicalRequest).digest('hex');
-  const stringToSign =
-    `${algorithm}\n${amzDate}\n${credentialScope}\n${hashedCanonical}`;
+  const stringToSign = `${algorithm}\n${amzDate}\n${credentialScope}\n${hashedCanonical}`;
   const kDate = createHmac('sha256', `AWS4${secretAccessKey}`).update(dateStamp).digest();
   const kRegion = createHmac('sha256', kDate).update(region).digest();
   const kService = createHmac('sha256', kRegion).update('s3').digest();

@@ -33,7 +33,14 @@ async function walk(dir) {
 function normalize(link) {
   // Strip query/fragment, drop leading `./`
   const [path] = link.split(/[?#]/);
-  if (!path || path.startsWith('http') || path.startsWith('mailto:') || path.startsWith('tel:') || path.startsWith('#') || path.startsWith('data:')) {
+  if (
+    !path ||
+    path.startsWith('http') ||
+    path.startsWith('mailto:') ||
+    path.startsWith('tel:') ||
+    path.startsWith('#') ||
+    path.startsWith('data:')
+  ) {
     return null;
   }
   return path;
@@ -89,7 +96,7 @@ async function checkPage(file) {
             await stat(target + 'index.html');
           } catch {
             // Skip external and missing favicon; report if not flagged
-              if (!raw.startsWith('http') && !raw.startsWith('//')) {
+            if (!raw.startsWith('http') && !raw.startsWith('//')) {
               // don't fail the smoke test for known placeholders
               const skip = [
                 '/favicon.ico',
@@ -99,7 +106,9 @@ async function checkPage(file) {
                 '/404/', // 404.html at root is Netlify's 404; /404/ is a UI reference
               ];
               if (!skip.includes(raw)) {
-                errors.push(`MISSING: ${file.replace(dist, '')} → ${raw} (target ${target.replace(dist, '')})`);
+                errors.push(
+                  `MISSING: ${file.replace(dist, '')} → ${raw} (target ${target.replace(dist, '')})`,
+                );
               }
             }
           }

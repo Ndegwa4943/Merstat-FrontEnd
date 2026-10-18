@@ -19,7 +19,8 @@ export const ui = {
     'nav.close': 'Close menu',
     'nav.search': 'Search',
 
-    'footer.tagline': 'Your trusted partner for program design, independent monitoring, and credible evidence across Africa, the Middle East, and Asia.',
+    'footer.tagline':
+      'Your trusted partner for program design, independent monitoring, and credible evidence across Africa, the Middle East, and Asia.',
     'footer.contact': 'Contact',
     'footer.address': 'Westlands, Nairobi, Kenya',
     'footer.hours': 'Mon–Fri, 9:00–17:00 EAT',
@@ -95,7 +96,8 @@ export const ui = {
     'nav.menu': 'Fungua menyu',
     'nav.close': 'Funga menyu',
     'nav.search': 'Tafuta',
-    'footer.tagline': 'Mshirika wako anayeaminika wa ubunifu wa mipango, ufuatiliaji huru, na ushahidi wa kuaminika.',
+    'footer.tagline':
+      'Mshirika wako anayeaminika wa ubunifu wa mipango, ufuatiliaji huru, na ushahidi wa kuaminika.',
     'footer.contact': 'Mawasiliano',
     'footer.address': 'Westlands, Nairobi, Kenya',
     'footer.hours': 'Jumatatu–Ijumaa, 9:00–17:00 EAT',
@@ -165,7 +167,8 @@ export const ui = {
     'nav.menu': 'Ouvrir le menu',
     'nav.close': 'Fermer le menu',
     'nav.search': 'Rechercher',
-    'footer.tagline': 'Votre partenaire de confiance pour la conception de programmes, le suivi indépendant et les preuves crédibles.',
+    'footer.tagline':
+      'Votre partenaire de confiance pour la conception de programmes, le suivi indépendant et les preuves crédibles.',
     'footer.contact': 'Contact',
     'footer.address': 'Westlands, Nairobi, Kenya',
     'footer.hours': 'Lun–Ven, 9h00–17h00 EAT',
@@ -205,7 +208,8 @@ export const ui = {
     'form.other': 'Autre (précisez)',
     'form.required': 'Requis',
     'form.optional': '(facultatif)',
-    'form.consent': 'Je consens au traitement de mes données par Merstat selon la politique de confidentialité.',
+    'form.consent':
+      'Je consens au traitement de mes données par Merstat selon la politique de confidentialité.',
     'form.spam': 'Ce champ sert à détecter le spam — laissez vide.',
     'search.placeholder': 'Rechercher services, études de cas, méthodes…',
     'search.empty': 'Aucun résultat. Essayez d’autres mots-clés.',

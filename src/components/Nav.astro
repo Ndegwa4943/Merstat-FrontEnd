@@ -10,8 +10,7 @@ const t = useTranslations(getLangFromUrl(Astro.url));
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isActive = (href: string) => {
   const normalized = href.replace(/\/$/, '') || '/';
-  return currentPath === normalized ||
-    (normalized !== '/' && currentPath.startsWith(normalized));
+  return currentPath === normalized || (normalized !== '/' && currentPath.startsWith(normalized));
 };
 ---
 
@@ -29,17 +28,19 @@ const isActive = (href: string) => {
     </label>
 
     <ul class="nav-links" role="list">
-      {NAV_LINKS.map(({ href, key }) => (
-        <li>
-          <a
-            href={href}
-            class:list={['nav-link', { active: isActive(href) }]}
-            aria-current={isActive(href) ? 'page' : undefined}
-          >
-            {t(key)}
-          </a>
-        </li>
-      ))}
+      {
+        NAV_LINKS.map(({ href, key }) => (
+          <li>
+            <a
+              href={href}
+              class:list={['nav-link', { active: isActive(href) }]}
+              aria-current={isActive(href) ? 'page' : undefined}
+            >
+              {t(key)}
+            </a>
+          </li>
+        ))
+      }
     </ul>
   </nav>
 </header>
@@ -96,8 +97,9 @@ const isActive = (href: string) => {
     border-radius: var(--radius-md);
     text-decoration: none;
     position: relative;
-    transition: color var(--duration-fast) var(--ease-standard),
-                background var(--duration-fast) var(--ease-standard);
+    transition:
+      color var(--duration-fast) var(--ease-standard),
+      background var(--duration-fast) var(--ease-standard);
   }
 
   .nav-link:hover,
@@ -122,7 +124,9 @@ const isActive = (href: string) => {
   }
 
   /* Hamburger */
-  .nav-toggle { display: none; }
+  .nav-toggle {
+    display: none;
+  }
   .nav-toggle-btn {
     display: none;
     flex-direction: column;
@@ -141,12 +145,15 @@ const isActive = (href: string) => {
     width: 100%;
     height: 2px;
     background: var(--color-accent);
-    transition: transform var(--duration-fast) var(--ease-standard),
-                opacity var(--duration-fast) var(--ease-standard);
+    transition:
+      transform var(--duration-fast) var(--ease-standard),
+      opacity var(--duration-fast) var(--ease-standard);
   }
 
   @media (max-width: 900px) {
-    .nav-toggle-btn { display: flex; }
+    .nav-toggle-btn {
+      display: flex;
+    }
     .nav-links {
       position: absolute;
       top: var(--nav-height);
@@ -160,15 +167,28 @@ const isActive = (href: string) => {
       overflow: hidden;
       transition: max-height var(--duration-base) var(--ease-standard);
     }
-    .nav-toggle:checked ~ .nav-links { max-height: 80vh; overflow: auto; }
-    .nav-toggle:checked + .nav-toggle-btn span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-    .nav-toggle:checked + .nav-toggle-btn span:nth-child(2) { opacity: 0; }
-    .nav-toggle:checked + .nav-toggle-btn span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+    .nav-toggle:checked ~ .nav-links {
+      max-height: 80vh;
+      overflow: auto;
+    }
+    .nav-toggle:checked + .nav-toggle-btn span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .nav-toggle:checked + .nav-toggle-btn span:nth-child(2) {
+      opacity: 0;
+    }
+    .nav-toggle:checked + .nav-toggle-btn span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
     .nav-link {
       padding: 0.75rem 1rem;
       font-size: var(--fs-base);
     }
-    .nav-link.active::after { display: none; }
-    .nav-link.active { background: rgba(255, 195, 0, 0.12); }
+    .nav-link.active::after {
+      display: none;
+    }
+    .nav-link.active {
+      background: rgba(255, 195, 0, 0.12);
+    }
   }
 </style>

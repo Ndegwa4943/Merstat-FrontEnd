@@ -58,9 +58,13 @@ const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITEKEY ?? '1x000000000000
     <label for="service">{t('form.service')} <span aria-hidden="true">*</span></label>
     <select id="service" name="service" required>
       <option value="">Choose service…</option>
-      {services.map((s) => (
-        <option value={s.id} selected={preselectedService === s.id}>{s.data.title}</option>
-      ))}
+      {
+        services.map((s) => (
+          <option value={s.id} selected={preselectedService === s.id}>
+            {s.data.title}
+          </option>
+        ))
+      }
       <option value="other">Other (please specify)</option>
     </select>
     <div id="other-group" hidden style="margin-top: var(--space-3);">
@@ -97,17 +101,13 @@ const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITEKEY ?? '1x000000000000
 
   <p style="margin-top: var(--space-5); text-align: center;">
     <button type="submit" class="btn btn--primary btn--lg">
-      <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> {t('cta.submit')}
+      <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+      {t('cta.submit')}
     </button>
   </p>
 </form>
 
-<script
-  is:inline
-  src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-  async
-  defer
-></script>
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 <script>
   const select = document.getElementById('service') as HTMLSelectElement | null;
@@ -145,6 +145,8 @@ const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITEKEY ?? '1x000000000000
     justify-content: center;
   }
   @media (max-width: 700px) {
-    .grid[style*="1fr 1fr"] { grid-template-columns: 1fr !important; }
+    .grid[style*='1fr 1fr'] {
+      grid-template-columns: 1fr !important;
+    }
   }
 </style>

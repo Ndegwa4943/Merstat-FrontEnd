@@ -73,10 +73,7 @@ export default defineConfig({
           return { ...item, priority: 1.0, changefreq: 'weekly' };
         }
         // Service and case-study pages: high priority.
-        if (
-          item.url.startsWith('/services/') ||
-          item.url.startsWith('/results/')
-        ) {
+        if (item.url.startsWith('/services/') || item.url.startsWith('/results/')) {
           return { ...item, priority: 0.9 };
         }
         return item;

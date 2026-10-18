@@ -1,8 +1,8 @@
 ---
-title: "Evaluations and Research"
-summary: "Baselines, midlines, endlines, impact assessments"
-description: "Baselines designed as rolling or retrospective when timing requires flexibility. Midline learning reviews and endline assessments."
-icon: "fa-magnifying-glass"
+title: 'Evaluations and Research'
+summary: 'Baselines, midlines, endlines, impact assessments'
+description: 'Baselines designed as rolling or retrospective when timing requires flexibility. Midline learning reviews and endline assessments.'
+icon: 'fa-magnifying-glass'
 order: 30
 ---
 

@@ -1,8 +1,8 @@
 ---
-title: "Climate MRV"
-summary: "Activity data systems that field teams can maintain"
-description: "Activity data systems that field teams can maintain. Emissions reduction calculators that are verification ready."
-icon: "fa-leaf"
+title: 'Climate MRV'
+summary: 'Activity data systems that field teams can maintain'
+description: 'Activity data systems that field teams can maintain. Emissions reduction calculators that are verification ready.'
+icon: 'fa-leaf'
 order: 70
 ---
 

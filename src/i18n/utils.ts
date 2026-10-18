@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ui, defaultLang, showDefaultLang, languages } from './ui';
 
 export type Locale = (typeof languages)[number];
@@ -12,10 +11,7 @@ export function getLangFromUrl(url: URL): Locale {
 }
 
 export function useTranslations(lang: Locale) {
-  return function t(
-    key: keyof typeof ui[typeof defaultLang] | string,
-    ...args: any[]
-  ): string {
+  return function t(key: keyof (typeof ui)[typeof defaultLang] | string, ...args: any[]): string {
     const dict = ui[lang] ?? ui[defaultLang];
     let value: any = dict[key as string];
     if (value === undefined) {

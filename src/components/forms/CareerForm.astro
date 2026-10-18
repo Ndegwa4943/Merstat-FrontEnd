@@ -57,9 +57,13 @@ const { jobs } = Astro.props;
     <label for="position">Talent pool / area of interest <span aria-hidden="true">*</span></label>
     <select id="position" name="position" required>
       <option value="">Select your best fit talent pool</option>
-      {jobs.map((j) => (
-        <option value={j.id}>{j.data.title} — {j.data.team}</option>
-      ))}
+      {
+        jobs.map((j) => (
+          <option value={j.id}>
+            {j.data.title} — {j.data.team}
+          </option>
+        ))
+      }
       <option value="other">Other / general application</option>
     </select>
   </div>
@@ -86,7 +90,10 @@ const { jobs } = Astro.props;
 
   <div class="field">
     <label for="message">Cover note (availability and preferred engagement type)</label>
-    <textarea id="message" name="message" rows="5"
+    <textarea
+      id="message"
+      name="message"
+      rows="5"
       placeholder="Tell us about your skills, experience, location, availability, and preferred engagement type (full-time, project-based, etc.)."
     ></textarea>
   </div>
@@ -107,12 +114,7 @@ const { jobs } = Astro.props;
   </p>
 </form>
 
-<script
-  is:inline
-  src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-  async
-  defer
-></script>
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 <script>
   const cvFile = document.getElementById('cv-file') as HTMLInputElement | null;
@@ -149,7 +151,9 @@ const { jobs } = Astro.props;
 </script>
 
 <style>
-  .career-form .field { margin-bottom: var(--space-4); }
+  .career-form .field {
+    margin-bottom: var(--space-4);
+  }
   .career-form label.checkbox {
     display: flex;
     align-items: flex-start;
@@ -158,7 +162,10 @@ const { jobs } = Astro.props;
     color: var(--color-text-muted);
     font-size: var(--fs-sm);
   }
-  .career-form label.checkbox input { width: auto; margin-top: 0.2rem; }
+  .career-form label.checkbox input {
+    width: auto;
+    margin-top: 0.2rem;
+  }
   .cv-drop {
     background: rgba(255, 255, 255, 0.05);
     border: 1.5px dashed rgba(255, 195, 0, 0.5);
@@ -166,14 +173,24 @@ const { jobs } = Astro.props;
     padding: var(--space-5);
     text-align: center;
   }
-  .cv-drop input { border: 0; background: transparent; padding: 0; }
-  .cv-drop small { display: block; margin-top: var(--space-3); color: var(--color-text-muted); }
+  .cv-drop input {
+    border: 0;
+    background: transparent;
+    padding: 0;
+  }
+  .cv-drop small {
+    display: block;
+    margin-top: var(--space-3);
+    color: var(--color-text-muted);
+  }
   .cf-turnstile {
     margin-top: var(--space-4);
     display: flex;
     justify-content: center;
   }
   @media (max-width: 700px) {
-    .grid[style*="1fr 1fr"] { grid-template-columns: 1fr !important; }
+    .grid[style*='1fr 1fr'] {
+      grid-template-columns: 1fr !important;
+    }
   }
 </style>

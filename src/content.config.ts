@@ -53,17 +53,25 @@ const services = defineCollection({
 
     // Knapsack 7-element template fields (optional — component falls back).
     heroOutcome: z.string().optional(), // outcome-led headline
-    empathy: z.string().optional(),     // 2-3 sentence problem framing
+    empathy: z.string().optional(), // 2-3 sentence problem framing
     outcomes: z.array(z.string()).optional(), // bullet outcomes-not-features
-    process: z.array(z.object({
-      title: z.string(),
-      body: z.string(),
-    })).optional(),
+    process: z
+      .array(
+        z.object({
+          title: z.string(),
+          body: z.string(),
+        }),
+      )
+      .optional(),
     proof: z.array(z.string()).optional(), // trust bullets
-    faqs: z.array(z.object({
-      question: z.string(),
-      answer: z.string(),
-    })).optional(),
+    faqs: z
+      .array(
+        z.object({
+          question: z.string(),
+          answer: z.string(),
+        }),
+      )
+      .optional(),
 
     relatedCaseStudies: z.array(reference('case-studies')).optional(),
     relatedMethods: z.array(reference('methods')).optional(),
@@ -80,8 +88,8 @@ const caseStudies = defineCollection({
   schema: z.object({
     title: z.string(),
     partnerDescriptor: z.string(), // "a multilateral climate fund"
-    sector: z.string(),            // e.g. "Climate / WASH"
-    geography: z.string(),         // e.g. "East Africa"
+    sector: z.string(), // e.g. "Climate / WASH"
+    geography: z.string(), // e.g. "East Africa"
     year: z.number(),
     order: z.number().default(100),
     draft: z.boolean().default(false),
@@ -89,12 +97,12 @@ const caseStudies = defineCollection({
     services: z.array(reference('services')).optional(),
 
     // 6 blocks (Proofmap):
-    snapshot: z.string(),    // 2-3 sentence elevator
-    setup: z.string(),       // context / starting point
-    complication: z.string(),// the challenge
-    solution: z.string(),    // what we did
+    snapshot: z.string(), // 2-3 sentence elevator
+    setup: z.string(), // context / starting point
+    complication: z.string(), // the challenge
+    solution: z.string(), // what we did
     results: z.array(z.string()),
-    takeaway: z.string(),    // what the reader should learn
+    takeaway: z.string(), // what the reader should learn
   }),
 });
 
@@ -146,12 +154,12 @@ const jobs = defineCollection({
     type: z.enum(['FULL_TIME', 'PART_TIME', 'CONTRACTOR', 'INTERN']),
     badge: z.string(), // "Full-time" / "Project-based" / "Consultant Roster"
     location: z.string(), // "Nairobi or remote within Africa"
-    team: z.string(),  // "MEL" / "TPM" / "Climate" / "Jobs & Inclusion"
+    team: z.string(), // "MEL" / "TPM" / "Climate" / "Jobs & Inclusion"
     summary: z.string(),
     order: z.number().default(100),
     draft: z.boolean().default(false),
     locale: localeEnum.default('en'),
-    datePosted: z.string(),       // ISO yyyy-mm-dd
+    datePosted: z.string(), // ISO yyyy-mm-dd
     validThrough: z.string().optional(),
     youWill: z.array(z.string()),
     youBring: z.array(z.string()),

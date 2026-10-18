@@ -27,7 +27,11 @@ const { title, badge, location, team, summary, href } = Astro.props;
 </article>
 
 <style>
-  .job-card { display: flex; flex-direction: column; gap: var(--space-3); }
+  .job-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
   .job-head {
     display: flex;
     justify-content: space-between;
@@ -35,14 +39,28 @@ const { title, badge, location, team, summary, href } = Astro.props;
     gap: var(--space-3);
     flex-wrap: wrap;
   }
-  .job-title { color: var(--color-accent); font-size: var(--fs-xl); margin: 0; }
+  .job-title {
+    color: var(--color-accent);
+    font-size: var(--fs-xl);
+    margin: 0;
+  }
   .job-meta {
-    display: flex; flex-wrap: wrap; gap: var(--space-4);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
     color: var(--color-text-muted);
     margin: 0;
     font-size: var(--fs-sm);
   }
-  .job-meta i { color: var(--color-accent); margin-right: 0.4rem; }
-  .job-summary { margin: 0; line-height: var(--lh-normal); }
-  .job-card .btn { align-self: flex-start; }
+  .job-meta i {
+    color: var(--color-accent);
+    margin-right: 0.4rem;
+  }
+  .job-summary {
+    margin: 0;
+    line-height: var(--lh-normal);
+  }
+  .job-card .btn {
+    align-self: flex-start;
+  }
 </style>

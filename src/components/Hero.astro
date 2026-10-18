@@ -21,12 +21,22 @@ const { eyebrow, headline, lead, primaryCta, secondaryCta, align = 'center' } = 
       {eyebrow && <p class="hero-eyebrow">{eyebrow}</p>}
       <h1 class="hero-headline">{headline}</h1>
       {lead && <p class="hero-lead">{lead}</p>}
-      {(primaryCta || secondaryCta) && (
-        <div class="hero-ctas">
-          {primaryCta && <a class="btn btn--primary btn--lg" href={primaryCta.href}>{primaryCta.label}</a>}
-          {secondaryCta && <a class="btn btn--ghost btn--lg" href={secondaryCta.href}>{secondaryCta.label}</a>}
-        </div>
-      )}
+      {
+        (primaryCta || secondaryCta) && (
+          <div class="hero-ctas">
+            {primaryCta && (
+              <a class="btn btn--primary btn--lg" href={primaryCta.href}>
+                {primaryCta.label}
+              </a>
+            )}
+            {secondaryCta && (
+              <a class="btn btn--ghost btn--lg" href={secondaryCta.href}>
+                {secondaryCta.label}
+              </a>
+            )}
+          </div>
+        )
+      }
     </div>
   </div>
 </section>
@@ -88,12 +98,22 @@ const { eyebrow, headline, lead, primaryCta, secondaryCta, align = 'center' } = 
     margin-top: var(--space-7);
     flex-wrap: wrap;
   }
-  .hero--left { text-align: left; }
-  .hero--left .hero-headline { margin-left: 0; }
-  .hero--left .hero-lead { margin-left: 0; }
-  .hero--left .hero-ctas { justify-content: flex-start; }
+  .hero--left {
+    text-align: left;
+  }
+  .hero--left .hero-headline {
+    margin-left: 0;
+  }
+  .hero--left .hero-lead {
+    margin-left: 0;
+  }
+  .hero--left .hero-ctas {
+    justify-content: flex-start;
+  }
 
   @media (max-width: 640px) {
-    .hero-card { padding: var(--space-5) var(--space-4); }
+    .hero-card {
+      padding: var(--space-5) var(--space-4);
+    }
   }
 </style>

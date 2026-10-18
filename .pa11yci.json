@@ -6,10 +6,7 @@
     },
     "timeout": 60000,
     "wait": 1000,
-    "ignore": [
-      "color-contrast",
-      "WCAG2AA.Principle2.Guideline2_4.4.H77,H78,H79,H80,H81"
-    ]
+    "ignore": ["color-contrast", "WCAG2AA.Principle2.Guideline2_4.4.H77,H78,H79,H80,H81"]
   },
   "urls": [
     { "name": "home", "url": "http://localhost:4321/" },
