@@ -65,6 +65,14 @@ module.exports = {
         'prioritize-lcp-image': 'off',
         'non-composited-animations': 'off',
         'lcp-lazy-loaded': 'off',
+
+        // network-dependency-tree-insight is a Lighthouse 13 "insight"
+        // audit, not a pass/fail metric: it reports score 0 with an empty
+        // network tree whenever it finds no critical-chain problem, and
+        // LHCI's minScore getter maps the 'informative' display mode to 0.
+        // Asserting it fails every page regardless of site quality. It is
+        // a diagnostic for investigating perf, not a budget.
+        'network-dependency-tree-insight': 'off',
       },
     },
     upload: {
