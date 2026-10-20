@@ -65,11 +65,17 @@ This is the step you said you didn't know. In the Shujaa client area:
    tab. Set it to **Custom nameservers** (not "Use Shujaa's defaults").
 5. Paste the 4 nameservers from Netlify, one per box, and **Save**.
 
-**Before you save: export your current records.** If you already have MX
-records (a mail server), SPF, or DKIM at Shujaa, changing nameservers
-deletes them and mail stops. Screenshot or note down every existing record
-first. If Merstat has a mailbox on this domain, you need those MX records
-recreated inside Netlify DNS in Part 5.
+**Before you save: check what mail you have.** Changing nameservers hides
+every record currently served by Shujaa.
+
+Checked live on 2026-10-20 — `merstat.org` currently has **no MX records**,
+**no SPF/DKIM TXT records**, and **no mail subdomains** (`mail`, `imap`,
+`pop`, `smtp`, `autodiscover` all fail to resolve). There is therefore no
+mail to lose, and the usual "mail will stop delivering" warning does not
+apply to this domain.
+
+If you add mail later, add the MX/TXT records inside Netlify DNS at the
+same time you delegate — Netlify does not host mailboxes itself.
 
 Propagating takes anywhere from 5 minutes to 24 hours (usually under an
 hour). Nothing is broken while it propagates — the Netlify subdomain keeps
@@ -91,10 +97,30 @@ Netlify usually pre-creates the apex + www records. Confirm these exist:
 Then click **Check DNS configuration**. It goes green when propagation
 completes.
 
-**Do not use these by hand** — for reference only, if you ever switch back
-to Shujaa-hosted DNS, the apex A record is `75.2.60.5` and `www` is a CNAME
-to `<your-site>.netlify.app`. Note that a single apex A record loses CDN
-edge routing; that is exactly why delegating nameservers is better.
+**Do not use these by hand** — reference only. If you ever switch back to
+Shujaa-hosted DNS, the apex A record is `75.2.60.5` and `www` is a CNAME
+to `<your-site>.netlify.app`.
+
+### Current state (verified 2026-10-20)
+
+`merstat.org` **already resolves to Netlify**, via two A records served by
+Shujaa's nameservers:
+
+| Host  | Type | Value                      |
+| ----- | ---- | -------------------------- |
+| `@`   | A    | `35.157.26.135`            |
+| `@`   | A    | `63.176.8.218`             |
+| `www` | A    | same two, 301s to the apex |
+
+`https://merstat.org` returns `server: Netlify` and
+`cache-status: Netlify Edge`. It currently answers **HTTP 404** — traffic
+reaches Netlify, but no site is bound to the domain yet, which is expected
+until the domain is added in Netlify and the site is deployed.
+
+So the A records are in place and working. The remaining work is to attach
+the domain to the Netlify site. Delegating nameservers (Part 3) remains
+worth doing — it restores CDN edge routing and puts DNS in one place — but
+it is no longer a prerequisite for the site being reachable.
 
 ### Mail records (only if Merstat uses `@merstat.org` email)
 
