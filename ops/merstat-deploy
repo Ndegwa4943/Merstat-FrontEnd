@@ -61,7 +61,15 @@ switch_to() { # $1 = release dir
 
 cmd_status() {
   local live
-  live=$(basename "$(live_release)")
+  # Not via live_release: `set -e` does not survive a command substitution, so a
+  # die() in there would exit only the subshell and status would go on to print
+  # an empty release name as though it were real.
+  if [[ ! -L $APP/current || ! -d $(readlink -f "$APP/current") ]]; then
+    echo "live: none — no release deployed yet"
+    echo "kept:"; list_releases | sed 's/^/  /'
+    return
+  fi
+  live=$(basename "$(dirname "$(readlink -f "$APP/current")")")
   echo "live: $live ($(cat "$RELEASES/$live/REVISION" 2>/dev/null || echo legacy))"
   echo "kept:"; list_releases | sed 's/^/  /'
 }
@@ -82,6 +90,11 @@ cmd_deploy() {
   echo "$sha" > "$tmp/REVISION"
   mkdir -p "$SHARED/form-submissions" "$SHARED/logs"
   chmod 750 "$SHARED/form-submissions"
+
+  # mktemp -d creates 0700 and mv preserves it, which would leave the release
+  # unreadable by nginx's www-data worker — every page would 403. The release
+  # holds only public static files, so world-readable is correct here.
+  chmod 755 "$tmp"
 
   mv "$tmp" "$rel"
   switch_to "$rel"
@@ -106,11 +119,22 @@ cmd_rollback() {
   log "rolled back to $target"
 }
 
-cmd=${1:-status}
-[[ ${2:-} == "deploy" && ${3:-} =~ ^[0-9a-f]{40}$ ]] && cmd=deploy
+# sshd runs a forced command with NO argv — it puts the client's requested
+# command in the SSH_ORIGINAL_COMMAND environment variable. A human running this
+# by hand has argv instead. Both must work, and reading only argv means a real
+# GitHub deploy silently falls through to `status` and leaves the old release
+# live while still exiting 0.
+line=${SSH_ORIGINAL_COMMAND:-$*}
+
+# CI invokes `merstat-deploy deploy <sha>`. sshd's forced command ignores the
+# binary name, so it arrives here as an ordinary leading token to strip.
+line=${line#merstat-deploy }
+read -r cmd sha extra <<<"$line"
+[[ -z ${extra:-} ]] || die "unexpected arguments: ${extra}"
+cmd=${cmd:-status}
 
 case "$cmd" in
-  deploy)   cmd_deploy "${3:-}" ;;
+  deploy)   cmd_deploy "$sha" ;;
   rollback) cmd_rollback ;;
   status)   cmd_status ;;
   *)        die "usage: merstat-deploy {deploy <sha>|rollback|status}" ;;

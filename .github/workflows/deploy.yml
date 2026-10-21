@@ -48,12 +48,14 @@ jobs:
           node scripts/smoke-test.mjs
           node scripts/test-api.mjs
 
-      # Streams a tar of dist/ into the release manager on the VPS. The deploy
-      # key is restricted server-side to that one script, so a leaked key
-      # cannot open a shell or read anything else on the box.
+      # Streams a tar of dist/ into the release manager on the VPS. The archive
+      # keeps a top-level `dist/` so it matches the on-disk release layout the
+      # unpacker validates against. The deploy key is restricted server-side to
+      # that one script, so a leaked key cannot open a shell or read anything
+      # else on the box.
       - name: Deploy to VPS
         run: |
-          tar -czf - -C dist . \
+          tar -czf - dist \
             | ssh -i "${{ secrets.VPS_SSH_KEY }}" \
                 -o StrictHostKeyChecking=accept-new \
                 "${{ secrets.VPS_DEPLOY_USER }}@${{ secrets.VPS_HOST }}" \
