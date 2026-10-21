@@ -18,7 +18,7 @@ interface Props {
 const { jobs } = Astro.props;
 ---
 
-<form name="careers" method="POST" action="/thanks?intent=careers" class="career-form">
+<form name="careers" method="POST" action="/api/forms/careers?intent=careers" class="career-form">
   <input type="hidden" name="form-name" value="careers" />
   <p class="sr-only">
     <label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>

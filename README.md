@@ -4,7 +4,8 @@
 
 Marketing site for **Merstat Development Limited**, a Nairobi-based development
 consulting firm. The site is built with [Astro 5](https://astro.build) and
-deployed on [Netlify](https://www.netlify.com).
+self-hosted on a VPS: nginx serves the static build, and a small Node service
+handles forms and CV uploads.
 
 > Building programs. Measuring change. Sustaining impact.
 
@@ -12,8 +13,8 @@ deployed on [Netlify](https://www.netlify.com).
 
 - **Astro 5** — content-driven static site with typed content collections (Zod).
 - **Sveltia CMS** — git-backed headless CMS for non-technical editors at `/admin/`.
-- **Netlify Forms** + **Cloudflare Turnstile** — serverless form pipeline with privacy-preserving spam protection.
-- **Netlify Function** + **Cloudflare R2** — CV uploads bypass Netlify's 8 MB cap and keep PII out of Netlify's DB.
+- **merstat-api** (Node) + **Cloudflare Turnstile** — form pipeline with a server-side spam check that fails closed.
+- **merstat-api** + **Cloudflare R2** — CV uploads go straight to R2 via a presigned URL, keeping PII off the box.
 - **Plausible Analytics** — cookieless, GDPR-clean, ~1 KB script.
 - **`web-vitals`** — real-user Core Web Vitals forwarded to Plausible custom events.
 - **Pagefind** — static, build-time, multilingual search.
@@ -92,12 +93,20 @@ public/
 ├── robots.txt
 └── favicon.svg
 
-netlify/
-└── functions/r2-presign.mjs  # Presigned Cloudflare R2 PUT URLs
+api/
+├── server.mjs         # node:http router — /api/health, /api/presign, /api/forms/:name
+├── forms.mjs          # honeypot + Turnstile verification, JSONL storage, optional email
+├── presign.mjs        # AWS SigV4 presigned Cloudflare R2 PUT URLs
+├── request.mjs        # normalises Web Request vs Node IncomingMessage
+└── ecosystem.config.cjs  # PM2 definition
+
+ops/
+├── nginx-merstat.org.conf  # vhost: security headers, redirects, caching, /api proxy
+└── merstat-deploy          # release manager; the only thing the CI deploy key can run
 
 .github/workflows/
-├── ci.yml              # lint, build, a11y, lighthouse
-└── deploy.yml          # Production deploy to Netlify
+├── ci.yml              # lint, build, a11y, lighthouse, smoke + api tests
+└── deploy.yml          # Production deploy to the VPS over SSH
 ```
 
 ## Editing content
@@ -175,22 +184,31 @@ The repo enforces these budgets in CI (`lighthouserc.cjs`, `.pa11yci.json`):
 
 ## Deployment
 
-Three workflows drive the project:
+Two workflows drive the project:
 
-| Workflow      | Triggers             | What it does                                                               |
-| ------------- | -------------------- | -------------------------------------------------------------------------- |
-| `ci.yml`      | every push, every PR | install, lint, build, smoke test, a11y, Lighthouse                         |
-| `preview.yml` | every PR             | builds and deploys a Netlify preview, comments the URL on the PR           |
-| `deploy.yml`  | push to `main`       | builds and deploys to Netlify production (protected by GitHub environment) |
+| Workflow     | Triggers             | What it does                                                        |
+| ------------ | -------------------- | ------------------------------------------------------------------- |
+| `ci.yml`     | every push, every PR | install, lint, build, smoke + API tests, a11y, Lighthouse           |
+| `deploy.yml` | push to `main`       | rebuilds and deploys to the VPS over SSH (GitHub environment gated) |
 
-### First-time setup
+There is no per-PR preview deploy — that was a Netlify feature with no
+self-hosted equivalent. Reviewers should check the CI checks and, if they need
+a rendered preview, ask for a manual deploy via **Actions → Deploy to VPS →
+Run workflow**.
 
-1. Connect the GitHub repo to Netlify at `https://app.netlify.com/start`.
-2. Netlify will detect `netlify.toml` and configure the build automatically.
-3. Add the secrets listed in [`docs/SECRETS.md`](./docs/SECRETS.md) to both
-   GitHub (Actions secrets) and Netlify (environment variables).
-4. Create the `production` GitHub environment with required reviewers.
-5. Add `secrets.NETLIFY_AUTH_TOKEN` and `secrets.NETLIFY_SITE_ID`.
+### Host setup
+
+Already done on the VPS; documented so it can be repeated or audited:
+
+1. `ops/nginx-merstat.org.conf` → `/etc/nginx/sites-available/merstat.org`,
+   symlinked into `sites-enabled/`. Run `nginx -t` before every reload.
+2. `ops/merstat-deploy` → `/usr/local/sbin/merstat-deploy`, bound to the CI
+   deploy key with a forced command.
+3. `api/` → `/var/www/merstat-api`, running under PM2 with `/api/` proxied to
+   `127.0.0.1:3011`.
+4. Add the three `VPS_*` secrets listed in [`docs/SECRETS.md`](./docs/SECRETS.md).
+5. Point the `@` A record at `69.164.244.165` and issue the cert — see
+   [`docs/DEPLOYMENT.md`](./docs/DEPLOYMENT.md).
 
 ### Branch protection (recommended)
 
@@ -209,21 +227,26 @@ On `https://github.com/MUNENE1212/Merstat-FrontEnd/settings/branches`:
 
 ## Forms
 
-Three forms post to Netlify Forms with honeypot + Cloudflare Turnstile:
+Three forms post to `merstat-api` with honeypot + Cloudflare Turnstile. The
+handler verifies the Turnstile token server-side and **fails closed** — if
+`siteverify` cannot be reached, the submission is rejected rather than trusted:
 
 - **Service request** — `ContactForm.astro` on `/contact/`
 - **Training booking** — `TrainingForm.astro` on `/trainings/`
 - **Career application** — `CareerForm.astro` on `/careers/`
 
-CV uploads go through a Netlify Function that issues a Cloudflare R2
-presigned URL — keeping PII out of Netlify's database.
+CV uploads request a Cloudflare R2 presigned URL from `/api/presign`, which
+checks the request `Origin` against an allow-list before signing — without that
+check the endpoint would be an open, anonymous upload bucket.
 
-**Before deploy**, set the following env vars in Netlify:
+**Before the site can accept real submissions**, set in
+`/var/www/merstat-api/.env` on the VPS:
 
-- `PUBLIC_TURNSTILE_SITEKEY` — Cloudflare Turnstile site key (public)
-- `TURNSTILE_SECRET_KEY` — Cloudflare Turnstile secret (for server-side validation)
-- `PUBLIC_PLAUSIBLE_DOMAIN` — `merstat.org`
-- `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` — for CV uploads
+- `TURNSTILE_SECRET_KEY` — real secret. The test key accepts every submission.
+- `R2_ENDPOINT`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET` — CV uploads
+- `ALLOWED_ORIGINS` — must include every origin the site is served from
+
+Full list and consequences: [`docs/SECRETS.md`](./docs/SECRETS.md).
 
 ## Localisation
 
@@ -233,12 +256,15 @@ those locales. Astro i18n config in `astro.config.mjs`.
 
 ## Migration from legacy `/templates/`
 
-The legacy static HTML is gone. `netlify.toml` still includes 301
-redirects from the old paths (`/Bookus`, `/Aboutus`,
-`/Results&Methods`) to the new canonical URLs — leave these in place
-for one full year after launch, then audit Search Console for any
-remaining inbound links and remove the redirects once 404 traffic is
-zero.
+The legacy static HTML is gone. `ops/nginx-merstat.org.conf` still includes
+301 redirects from the old paths (`/Bookus`, `/Aboutus`,
+`/Results&Methods`, `/templates/*`) to the new canonical URLs — leave these in
+place for one full year after launch, then audit Search Console for any
+remaining inbound links and remove the redirects once 404 traffic is zero.
+
+`netlify.toml` is kept in the repo purely as the historical source of the
+security-header policy. The running config is the nginx vhost; if you change
+headers, change both.
 
 See [`docs/ROLLBACK.md`](./docs/ROLLBACK.md) for the rollback procedure.
 

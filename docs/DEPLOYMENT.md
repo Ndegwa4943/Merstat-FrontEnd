@@ -1,227 +1,178 @@
-# Deploying merstat.org to Netlify
+# Deploying merstat.org
 
-Two halves: **code** (done, in this repo) and **DNS** (you do this by hand in
-two browser tabs). The code half is finished — this document is the checklist
-for the DNS half.
+The site is self-hosted. There is no Netlify site, no Netlify account, and no
+Netlify secret. Code deploys to the VPS `69.164.244.165` over SSH; DNS stays
+at Shujaa and needs one A record changed.
+
+```
+GitHub push → Actions (build + gate) → tar over SSH → merstat-deploy → nginx
+```
 
 ---
 
-## Part 1 — Code (already done in this repo)
+## What runs where
 
-| What                                                                  | Status |
-| --------------------------------------------------------------------- | ------ |
-| Canonical domain switched to `https://merstat.org`                    | done   |
-| `astro.config.mjs` → `site:`                                          | done   |
-| `src/utils/site.ts` → `SITE.url`, emails                              | done   |
-| `public/robots.txt`, `public/humans.txt`                              | done   |
-| `public/admin/config.js` (Sveltia CMS)                                | done   |
-| CI / deploy / preview workflows `SITE_URL`                            | done   |
-| `netlify.toml` placeholder env vars removed                           | done   |
-| Placeholder `R2_ENDPOINT` removed (would have broken the CV function) | done   |
+| Piece        | Where                        | Restart needed on deploy? |
+| ------------ | ---------------------------- | ------------------------- |
+| Static site  | `/var/www/merstat/current`   | No — symlink swap         |
+| Form handler | `/var/www/merstat-api` (PM2) | No — deliberately not     |
+| R2 presign   | same process, `/api/presign` | No                        |
+| TLS          | certbot (system)             | No                        |
 
-Verify locally before deploying:
+`merstat-api` is intentionally outside the release cycle: the static site is
+swapped by symlink, but restarting the API on every content deploy would drop
+in-flight submissions for nothing. Update it by hand when `api/` changes:
 
 ```bash
-npm run build
-grep -o 'https://merstat\.org' dist/sitemap-0.xml | head
+cd /var/www/merstat-api && git pull && pm2 reload ecosystem.config.cjs
 ```
 
 ---
 
-## Part 2 — Netlify: create the site and connect GitHub
+## Deploying
 
-1. Sign in at <https://app.netlify.com>.
-2. **Add new site → Import an existing project** → pick
-   `MUNENE1212/Merstat-FrontEnd` (**your** repo, not `Ndegwa4943/`).
-3. Build settings — these are already in `netlify.toml`, so accept the
-   defaults and just confirm:
-   - Build command: `npm run build`
-   - Publish directory: `dist`
-   - Base directory: _(leave blank)_
-4. Click **Deploy site**. You get a random URL like
-   `https://brave-curie-12345.netlify.app`. It works immediately.
-5. Open **Site settings → Domain management → Add a domain** and type
-   `merstat.org`. Add `www.merstat.org` too (Netlify adds the www pairing
-   itself — you do not need to add it separately).
-6. Copy the **4 Netlify name servers** shown on that page. They look like:
-   ```
-   ns1-ns4.your-provider.net   (exact values shown in your Netlify UI)
-   ```
-   Paste them into the box in Part 3.
+Push to `main`. `.github/workflows/deploy.yml` runs `npm run build`, the smoke
+and API test suites, then streams a tar of `dist/` over SSH. There is no
+manual deploy step.
 
-> **Do not** create DNS records for merstat.org at Shujaa yourself. Once you
-> delegate to Netlify DNS, every record lives in Netlify. See Part 5.
+To deploy a specific ref without merging, use **Actions → Deploy to VPS →
+Run workflow**.
 
----
+### The deploy key
 
-## Part 3 — Shujaa client area: change the name servers
-
-This is the step you said you didn't know. In the Shujaa client area:
-
-1. Log in to your hosting/domain client area.
-2. Go to **Domains** (sometimes **My Domains** or **Domain Portfolio**).
-3. Click `merstat.org`, then **Manage / Manage Domain**.
-4. Find **Nameservers** — it may be under a "DNS" tab or a "Nameserver"
-   tab. Set it to **Custom nameservers** (not "Use Shujaa's defaults").
-5. Paste the 4 nameservers from Netlify, one per box, and **Save**.
-
-**Before you save: check what mail you have.** Changing nameservers hides
-every record currently served by Shujaa.
-
-Checked live on 2026-10-20 — `merstat.org` currently has **no MX records**,
-**no SPF/DKIM TXT records**, and **no mail subdomains** (`mail`, `imap`,
-`pop`, `smtp`, `autodiscover` all fail to resolve). There is therefore no
-mail to lose, and the usual "mail will stop delivering" warning does not
-apply to this domain.
-
-If you add mail later, add the MX/TXT records inside Netlify DNS at the
-same time you delegate — Netlify does not host mailboxes itself.
-
-Propagating takes anywhere from 5 minutes to 24 hours (usually under an
-hour). Nothing is broken while it propagates — the Netlify subdomain keeps
-serving.
-
----
-
-## Part 4 — Netlify: create the DNS records
-
-Go back to **Netlify → your site → Domain management → DNS records**.
-
-Netlify usually pre-creates the apex + www records. Confirm these exist:
-
-| Type  | Host       | Value                                               | TTL  |
-| ----- | ---------- | --------------------------------------------------- | ---- |
-| A     | `@` (apex) | _(Netlify's load balancer — auto-filled, leave it)_ | 3600 |
-| CNAME | `www`      | `<your-site>.netlify.app`                           | 3600 |
-
-Then click **Check DNS configuration**. It goes green when propagation
-completes.
-
-**Do not use these by hand** — reference only. If you ever switch back to
-Shujaa-hosted DNS, the apex A record is `75.2.60.5` and `www` is a CNAME
-to `<your-site>.netlify.app`.
-
-### Current state (verified 2026-10-20)
-
-`merstat.org` **already resolves to Netlify**, via two A records served by
-Shujaa's nameservers:
-
-| Host  | Type | Value                      |
-| ----- | ---- | -------------------------- |
-| `@`   | A    | `35.157.26.135`            |
-| `@`   | A    | `63.176.8.218`             |
-| `www` | A    | same two, 301s to the apex |
-
-`https://merstat.org` returns `server: Netlify` and
-`cache-status: Netlify Edge`. It currently answers **HTTP 404** — traffic
-reaches Netlify, but no site is bound to the domain yet, which is expected
-until the domain is added in Netlify and the site is deployed.
-
-So the A records are in place and working. The remaining work is to attach
-the domain to the Netlify site. Delegating nameservers (Part 3) remains
-worth doing — it restores CDN edge routing and puts DNS in one place — but
-it is no longer a prerequisite for the site being reachable.
-
-### Mail records (only if Merstat uses `@merstat.org` email)
-
-Netlify DNS **does not host mail**. If you need `contact@merstat.org` to
-receive mail, add MX/TXT records pointing at your mail provider —
-Cloudflare Email Routing (free), Zoho, Google Workspace, or your host.
-Until then the addresses in the site config are valid-looking but dead.
-
----
-
-## Part 5 — Netlify: environment variables
-
-**Site settings → Environment variables.** Set these in the UI, _not_ in
-`netlify.toml` (file-based values override the UI):
+GitHub holds an SSH key restricted server-side:
 
 ```
-PUBLIC_TURNSTILE_SITEKEY    = <real key from Cloudflare Turnstile>
-TURNSTILE_SECRET_KEY        = <real secret>
-PUBLIC_PLAUSIBLE_DOMAIN     = merstat.org
-R2_ACCOUNT_ID               = <Cloudflare account id>
-R2_ACCESS_KEY_ID            = <R2 API token key>
-R2_SECRET_ACCESS_KEY        = <R2 API token secret>
-R2_BUCKET                   = merstat-uploads
-R2_REGION                   = auto
-R2_ENDPOINT                 = https://<account-id>.r2.cloudflarestorage.com
-R2_PUBLIC_BASE              = https://uploads.merstat.org
+command="/usr/local/sbin/merstat-deploy",restrict ssh-ed25519 … merstat-github-deploy
 ```
 
-Turnstile keys come from <https://dash.cloudflare.com> → Turnstile → Add
-site. Add both `merstat.org` and `www.merstat.org` as hostnames.
+`command=` means the key can only ever run that one script — it cannot open a
+shell, read a file, or tunnel, even if the private key leaks. `restrict`
+additionally disables pty, agent and X11 forwarding.
+
+Three secrets back this (set in repo settings, **not** in any file):
+
+| Secret            | Value            |
+| ----------------- | ---------------- |
+| `VPS_HOST`        | `69.164.244.165` |
+| `VPS_DEPLOY_USER` | `root`           |
+| `VPS_SSH_KEY`     | the private key  |
+
+Rotating the key: generate a new pair, add the new **public** line to
+`/root/.ssh/authorized_keys` on the VPS, update `VPS_SSH_KEY`, then remove the
+old line.
 
 ---
 
-## Part 6 — GitHub Actions secrets (if you use the CI deploy path)
+## Operating the deploy script
 
-The repo has its own deploy workflow at `.github/workflows/deploy.yml`,
-separate from Netlify's git integration. Pick **one**, or you'll get two
-deploys racing:
-
-- **Netlify git integration** (simplest) — do nothing, it already works.
-  Then delete or disable `.github/workflows/deploy.yml` and `preview.yml`.
-- **GitHub Actions** — set two secrets at
-  <https://github.com/MUNENE1212/Merstat-FrontEnd/settings/secrets/actions>:
-  - `NETLIFY_AUTH_TOKEN` — from
-    <https://app.netlify.com/user/applications#personal-access-tokens>
-  - `NETLIFY_SITE_ID` — Site settings → Site details → API ID
-
-Full table: `docs/SECRETS.md`.
-
----
-
-## Part 7 — Sveltia CMS (`/admin/`)
-
-`public/admin/config.js` uses the **git-gateway** backend on branch `main`.
-Enable it:
-
-- Netlify → **Identity → Enable Identity**
-- Netlify → **Identity → Services → Git Gateway → Enable**
-- Netlify → **Identity → Registration → Invite yourself** (and each editor)
-
-Visit `https://merstat.org/admin/` and log in. Editors then manage services,
-case studies, jobs, trainings, methods, posts, and team through the UI —
-each save is a commit and a rebuild.
-
----
-
-## Part 8 — Verify
+Only `root` on the box runs this, by hand or through the key:
 
 ```bash
-# DNS
-dig +short merstat.org A
-dig +short www.merstat.org
-
-# Site + HTTPS
-curl -sI https://merstat.org | head -1
-curl -sI https://www.merstat.org | head -1
-curl -s https://merstat.org/robots.txt
-
-# Function
-curl -s -X POST https://merstat.org/.netlify/functions/r2-presign \
-  -H 'Content-Type: application/json' \
-  -d '{"filename":"cv.pdf","contentType":"application/pdf"}' | head -c 200
+merstat-deploy status      # what is live, and the 5 releases kept
+merstat-deploy rollback    # switch back to the previous release
 ```
 
-Then in Netlify: **Site settings → HTTP → HTTPS** should show
-"Automatically managed" with a green certificate, and **Site overview** should
-show no pending domain verification.
+Rollback is a symlink swap — instant, no rebuild. Releases live in
+`/var/www/merstat/releases/<utc>-<sha7>/`; the newest 5 are kept.
 
-### Pre-launch checklist
-
-- [ ] Both apex and `www` load over HTTPS with a valid cert
-- [ ] Contact form submits and lands on `/thanks?intent=contact`
-- [ ] Careers form CV upload reaches R2 (no `R2 credentials missing`)
-- [ ] `/admin/` loads and you can log in
-- [ ] `https://merstat.org/sitemap-index.xml` lists `merstat.org` URLs
-- [ ] Search Console: submit the sitemap at
-      <https://search.google.com/search-console>
+`merstat-deploy` refuses to switch to an archive that is missing
+`index.html`, `404.html` or `_assets/`, so a truncated upload cannot take the
+site down. Its deploy log is `/var/log/merstat-deploy.log`.
 
 ---
 
-## Rollback
+## Runtime configuration (on the VPS)
 
-`docs/ROLLBACK.md`. To roll back DNS, set the name servers back to whatever
-Shujaa had before Part 3 — which is why you recorded them.
+`/var/www/merstat-api/.env`, mode `600`, owned by `root`. Template and full key
+list: `api/.env.example`. **Never commit this file.**
+
+PM2 does not read `.env` files, so `ecosystem.config.cjs` passes
+`--env-file-if-exists` to node. If that flag is dropped, `TURNSTILE_SECRET_KEY`
+silently becomes undefined and **every** submission is rejected — the handler
+fails closed by design.
+
+### Before this site can accept real submissions
+
+The box currently runs the Cloudflare **test** Turnstile secret, which makes
+`siteverify` return success for any token. Until the real secret is in place,
+the spam check is effectively off. Set at minimum:
+
+- `TURNSTILE_SECRET_KEY` — real secret. Without it, no bot filtering.
+- `R2_*` — required for CV upload. `presign` returns 500 until these exist.
+- `ALLOWED_ORIGINS` — add `https://www.merstat.org` if you serve www.
+
+Form submissions are appended to
+`/var/www/merstat/shared/form-submissions/<form>.jsonl`, which survives
+deploys. Optional SMTP vars email a copy; unset, submissions are disk-only.
+
+> R2 credential names differ from the old Netlify function's — it now reads
+> `R2_ENDPOINT` (the full bucket URL), not `R2_ACCOUNT_ID`.
+
+---
+
+## DNS (this is the part you do by hand)
+
+Nameservers **stay** `dns1-4.p03.nsone.net`. Only two records change:
+
+| Host  | Type  | Value            |
+| ----- | ----- | ---------------- |
+| `@`   | A     | `69.164.244.165` |
+| `www` | CNAME | `@`              |
+
+In the Shujaa client area: Domains → merstat.org → DNS / Nameservers → edit
+the `@` A record. It currently points at Netlify (`35.157.26.135` and
+`63.176.8.218`) — replace both with a single record above.
+
+No mail records are affected: merstat.org has no MX, SPF or DKIM today.
+
+### Order of operations
+
+The certificate cannot be issued until DNS points at the VPS, so:
+
+1. Get the real secrets in `.env` (above).
+2. Change the A record at Shujaa.
+3. Wait for propagation (`dig +short A merstat.org @1.1.1.1`).
+4. Issue the certificate:
+
+```bash
+certbot certonly --nginx -d merstat.org -d www.merstat.org
+```
+
+Until step 4 the site is served with a **self-signed placeholder**, so browsers
+show a warning. That is expected and temporary.
+
+---
+
+## Verifying
+
+Once DNS has moved and the cert is issued:
+
+```bash
+dig +short A merstat.org @1.1.1.1                  # 69.164.244.165
+curl -sSI https://merstat.org | head -1            # HTTP/2 200
+
+# Security headers — these came from netlify.toml and are easy to lose
+curl -sSI https://merstat.org | grep -iE 'content-security-policy|strict-transport|x-frame'
+
+# A real form submission returns 302 and preserves ?intent=
+curl -sS -X POST https://merstat.org/api/forms/contact \
+  -d 'form-name=contact&email=a@b.co&cf-turnstile-response=<token>' \
+  -o /dev/null -w '%{http_code} -> %{redirect_url}'
+```
+
+On the box itself, after any nginx change: `nginx -t` **before** reloading.
+The box is shared — 18 other vhosts, live mail, 9 PM2 apps.
+
+---
+
+## Local gate (same as CI)
+
+```bash
+npm run format:check && npm run lint && npm run build
+npm run test:smoke && npm run test:api
+```
+
+`test:smoke` walks the built `dist/` and checks every internal link resolves —
+85 pages. `test:api` starts the form/presign service and drives 20 assertions
+over real HTTP. Both are provider-neutral, so they are valid before a deploy.

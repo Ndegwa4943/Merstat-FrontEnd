@@ -1,58 +1,64 @@
-# Repository secrets
+# Secrets
 
-This document lists the GitHub Actions secrets and variables required by
-the workflows in `.github/workflows/`.
+Two separate places: GitHub Actions (for deploys) and the VPS (for the running
+service). Neither belongs in a committed file.
 
-## Where to set them
+## GitHub Actions secrets
 
-`https://github.com/MUNENE1212/Merstat-FrontEnd/settings/secrets/actions`
+Set at `https://github.com/MUNENE1212/Merstat-FrontEnd/settings/secrets/actions`
 
-## Required for `deploy.yml` and `preview.yml`
+| Secret            | What it is                                                       |
+| ----------------- | ---------------------------------------------------------------- |
+| `VPS_HOST`        | `69.164.244.165`                                                 |
+| `VPS_DEPLOY_USER` | `root`                                                           |
+| `VPS_SSH_KEY`     | Private key whose public half is in `/root/.ssh/authorized_keys` |
 
-| Secret               | What                              | Where to get it                                                    |
-| -------------------- | --------------------------------- | ------------------------------------------------------------------ |
-| `NETLIFY_AUTH_TOKEN` | Personal access token for Netlify | `https://app.netlify.com/user/applications#personal-access-tokens` |
-| `NETLIFY_SITE_ID`    | The site's ID (UUID)              | Netlify → Site settings → Site details → "API ID"                  |
+There is no Netlify token any more. If you find `NETLIFY_AUTH_TOKEN` or
+`NETLIFY_SITE_ID` still set, delete them — nothing reads them.
 
-The workflow reads the values from secrets at runtime. The token is
-scoped to a single Netlify account; rotate every 90 days.
+## Runtime secrets on the VPS
 
-## Required in Netlify (for the runtime site)
+`/var/www/merstat-api/.env`, mode `600`, owned by `root`. The template with
+every key documented is `api/.env.example`.
 
-These are **not** GitHub secrets — they live in the Netlify UI for the site:
+The values that matter:
 
-`https://app.netlify.com/sites/<site>/settings/env`
+| Key                    | Consequence if wrong or missing                                                                          |
+| ---------------------- | -------------------------------------------------------------------------------------------------------- |
+| `ALLOWED_ORIGINS`      | Wrong = legitimate users blocked; too broad = the presign endpoint hands anonymous upload URLs to anyone |
+| `TURNSTILE_SECRET_KEY` | Missing = every submission rejected. The Cloudflare **test** key means every submission is accepted      |
+| `R2_ENDPOINT` etc.     | Missing = `presign` returns 500 and CV upload is broken                                                  |
+| `SMTP_*`               | Optional. Empty = submissions are recorded to disk only                                                  |
 
-| Variable                   | Required for                   | Description                                           |
-| -------------------------- | ------------------------------ | ----------------------------------------------------- |
-| `PUBLIC_TURNSTILE_SITEKEY` | Forms                          | Cloudflare Turnstile public site key                  |
-| `TURNSTILE_SECRET_KEY`     | Forms (server-side validation) | Cloudflare Turnstile secret                           |
-| `PUBLIC_PLAUSIBLE_DOMAIN`  | Analytics                      | Plausible site domain (`merstat.org`)                 |
-| `R2_ACCOUNT_ID`            | CV upload function             | Cloudflare account ID                                 |
-| `R2_ACCESS_KEY_ID`         | CV upload function             | R2 API token — Access Key                             |
-| `R2_SECRET_ACCESS_KEY`     | CV upload function             | R2 API token — Secret Key                             |
-| `R2_BUCKET`                | CV upload function             | R2 bucket name                                        |
-| `R2_REGION`                | CV upload function             | R2 region (`auto` recommended)                        |
-| `R2_PUBLIC_BASE`           | CV download                    | `https://uploads.merstat.org` (or your custom domain) |
-| `SLACK_WEBHOOK_URL`        | Form notifications (optional)  | Slack incoming webhook                                |
-| `DISCORD_WEBHOOK_URL`      | Form notifications (optional)  | Discord webhook                                       |
+Checking what is actually set (values are not printed):
 
-## Optional for code review automation
+```bash
+sudo grep -oE '^[A-Z_]+' /var/www/merstat-api/.env | sort
+sudo stat -c '%a %U' /var/www/merstat-api/.env     # want: 600 root
+```
 
-| Secret          | Used by                 | Description                                        |
-| --------------- | ----------------------- | -------------------------------------------------- |
-| `CODECOV_TOKEN` | Optional Codecov upload | Codecov project token, only if you wire up Codecov |
+## Build-time variables
 
-## GitHub environment
+Only `SITE_URL` is read at build time, and CI sets it. Anything prefixed
+`PUBLIC_` in `astro.config.mjs` is embedded into the HTML — treat those as
+public, not secret.
 
-The `deploy.yml` workflow targets the `production` GitHub environment.
-Configure it at `https://github.com/MUNENE1212/Merstat-FrontEnd/settings/environments/new`
-with name `production` and add `main` as a deployment branch.
+## Rotation
 
-Environment protection rules (recommended):
+- **Turnstile** — change the key in Cloudflare, then in `.env`, then
+  `pm2 reload ecosystem.config.cjs`.
+- **R2** — issue a new API token, update `.env`, reload. Delete the old token
+  only after the reload succeeds.
+- **Deploy key** — add the new public key alongside the old in
+  `/root/.ssh/authorized_keys`, update `VPS_SSH_KEY`, verify a deploy works,
+  then remove the old line.
 
-- Required reviewers: 1 from `@MUNENE1212`
-- Wait timer: 0 minutes
-- Deployment branches: `main` only
+## What is deliberately not secret
 
-This ensures every production deploy needs an explicit human approval.
+`public/admin/config.js` names the CMS repo and backend in clear text. That is
+fine: Sveltia authenticates through GitHub OAuth and the repo's own permissions
+are the access control. Do not put a token in that file.
+
+Submissions in `/var/www/merstat/shared/form-submissions/` are mode `640`,
+`root:www-data`, and contain real names, emails and messages. They are not
+public and should not be copied into the repo.

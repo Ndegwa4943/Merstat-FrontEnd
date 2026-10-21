@@ -26,8 +26,10 @@
 - **CSS**: prefer tokens (`var(--space-4)`, `var(--color-accent)`) over raw values.
 - **Accessibility**: every interactive control needs a `min-height: 44px`,
   every `<img>` needs an `alt`, every form `<input>` needs a `<label>`.
-- **Forms**: every form must have honeypot (`netlify-honeypot="bot-field"`)
-  and a `form-name` hidden input matching the `name` attribute.
+- **Forms**: every form must have a honeypot input named `bot-field` and a
+  hidden `form-name` input matching the form's `name` attribute. Both are
+  enforced server-side by `api/forms.mjs` — dropping one silently disables
+  spam filtering for that form.
 - **Links**: internal links use trailing-slash absolute paths (`/services/`,
   not `services.html`).
 
@@ -35,7 +37,7 @@
 
 1. Edit the relevant `.md` file in `src/content/`.
 2. `npm run dev` and check the change at `http://localhost:4321/`.
-3. Run `npm run format:fix` and `npm run lint:fix`.
+3. Run `npm run format` and `npm run lint:fix`.
 4. Commit. CI runs Lighthouse + pa11y.
 
 ## Workflow for a new page
@@ -50,11 +52,17 @@
 ## Workflow for a new form
 
 1. Create `src/components/forms/MyForm.astro`.
-2. Use `<form name="…" method="POST" netlify-honeypot="bot-field">`.
-3. Always include a hidden `<input type="hidden" name="form-name" value="…">`.
-4. Add the Cloudflare Turnstile widget.
-5. Add the success redirect URL: `action="/thanks?intent=myform"`.
-6. Update `src/pages/thanks.astro` to show a relevant message for `intent=myform`.
+2. Use `<form name="…" method="POST" action="/api/forms/myform">`.
+3. Include a hidden `<input type="hidden" name="form-name" value="myform">`
+   — the handler rejects a mismatch.
+4. Include the honeypot: a `bot-field` input hidden from humans. It must be
+   present but unfilled; anything in it is treated as a bot.
+5. Add the Cloudflare Turnstile widget, and post its token as
+   `cf-turnstile-response`. Verification is server-side and fails closed.
+6. Update `src/pages/thanks.astro` to show a relevant message for
+   `?intent=myform`.
+7. If the form accepts a file, request a presigned URL from `/api/presign`
+   rather than posting the file through the form — see `CareerForm.astro`.
 
 ## Forbidden
 
@@ -64,10 +72,17 @@
 - ❌ Don't add third-party scripts without updating the perf budget.
 - ❌ Don't add new colours or font sizes — add a token first.
 - ❌ Don't commit `dist/`, `.astro/`, `node_modules/`.
+- ❌ Don't commit `/var/www/merstat-api/.env` or any real secret value.
 
 ## Things to remember
 
-- `<Form>` is `name="..."` (HTML attribute). Netlify uses this to detect the form.
+- The form's `name` and its hidden `form-name` field must match exactly; a
+  mismatch is rejected with 400.
+- The `?intent=` query is preserved by the 302 on success. A bare `/thanks`
+  loses it and every visitor sees the generic message.
 - Pages without `<SEO />` will lack canonical, OG, and JSON-LD. Don't skip it.
 - `<Hero />` takes `eyebrow`, `headline`, `lead`, and CTAs. Don't reinvent it.
-- Sitemap and RSS auto-generate from content collections via the integrations.
+- Sitemap auto-generates from content collections. There is no RSS
+  integration installed, despite what this file used to claim.
+- `output: 'static'` — there is no SSR and no API routes. Forms and the R2
+  presign are a separate Node service (`api/`) that nginx proxies at `/api/`.
