@@ -1,16 +1,16 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import netlify from '@astrojs/netlify';
 import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
   site: process.env.SITE_URL || 'https://merstat.org',
 
-  // Static output (SSG) with Netlify Functions for the R2 CV upload.
-  // Set output: 'hybrid' only if you need SSR for authenticated routes.
+  // Pure static output — no adapter needed. dist/ is served directly by nginx
+  // on the VPS. Set output: 'hybrid' plus a server adapter only if a route
+  // ever needs SSR; the forms and the R2 presign live in a separate Node
+  // service (merstat-api) behind /api/.
   output: 'static',
-  adapter: netlify(),
 
   // 5x faster builds on most CI runners.
   experimental: {

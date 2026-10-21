@@ -18,14 +18,7 @@ interface Props {
 const { jobs } = Astro.props;
 ---
 
-<form
-  name="careers"
-  method="POST"
-  action="/thanks?intent=careers"
-  data-netlify="true"
-  netlify-honeypot="bot-field"
-  class="career-form"
->
+<form name="careers" method="POST" action="/thanks?intent=careers" class="career-form">
   <input type="hidden" name="form-name" value="careers" />
   <p class="sr-only">
     <label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
@@ -124,7 +117,7 @@ const { jobs } = Astro.props;
       const file = cvFile.files?.[0];
       if (!file) return;
       try {
-        const presign = await fetch('/.netlify/functions/r2-presign', {
+        const presign = await fetch('/api/presign', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -148,6 +141,15 @@ const { jobs } = Astro.props;
       }
     });
   }
+
+  // The CV is uploaded straight to R2 by the change handler above, so by the
+  // time the form submits the file input is redundant. Leaving it enabled
+  // would re-attach the whole file to the POST body. Disabling an input
+  // removes it from the submission without touching what the visitor sees.
+  const careerForm = cvFile?.closest('form');
+  careerForm?.addEventListener('submit', () => {
+    cvFile.disabled = true;
+  });
 </script>
 
 <style>

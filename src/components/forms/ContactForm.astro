@@ -18,14 +18,10 @@ const { services, intent = 'service', preselectedService = '' } = Astro.props;
 const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITEKEY ?? '1x00000000000000000000AA';
 ---
 
-<form
-  name="contact"
-  method="POST"
-  action={`/thanks?intent=${intent}`}
-  data-netlify="true"
-  netlify-honeypot="bot-field"
-  class="contact-form"
->
+<!-- Posts to the merstat-api form handler, which enforces the honeypot and
+     the Turnstile token, then 302s back to the action URL. `bot-field` is the
+     honeypot: real users never see it, bots fill every input they find. -->
+<form name="contact" method="POST" action={`/thanks?intent=${intent}`} class="contact-form">
   <input type="hidden" name="form-name" value="contact" />
   <input type="hidden" name="intent" value={intent} />
   <p class="sr-only">

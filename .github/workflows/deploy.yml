@@ -1,4 +1,4 @@
-name: Deploy to Netlify
+name: Deploy to VPS
 
 on:
   push:
@@ -26,7 +26,7 @@ jobs:
     timeout-minutes: 15
     environment:
       name: production
-      url: ${{ steps.deploy.outputs.deployment-url }}
+      url: https://merstat.org
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,25 +43,26 @@ jobs:
         env:
           SITE_URL: https://merstat.org
 
-      - name: Deploy to Netlify
-        id: deploy
-        uses: nwtgck/actions-netlify@v4.0
-        with:
-          publish-dir: dist
-          production-deploy: true
-          deploy-message: "Deploy from ${{ github.sha }}"
-          secrets: |
-            NETLIFY_AUTH_TOKEN
-            NETLIFY_SITE_ID
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      - name: Verify the build before shipping it
+        run: |
+          node scripts/smoke-test.mjs
+          node scripts/test-api.mjs
+
+      # Streams a tar of dist/ into the release manager on the VPS. The deploy
+      # key is restricted server-side to that one script, so a leaked key
+      # cannot open a shell or read anything else on the box.
+      - name: Deploy to VPS
+        run: |
+          tar -czf - -C dist . \
+            | ssh -i "${{ secrets.VPS_SSH_KEY }}" \
+                -o StrictHostKeyChecking=accept-new \
+                "${{ secrets.VPS_DEPLOY_USER }}@${{ secrets.VPS_HOST }}" \
+                "merstat-deploy deploy $GITHUB_SHA"
 
       - name: Comment on commit
-        if: github.event_name == 'push' && steps.deploy.outputs.deployment-url != ''
+        if: github.event_name == 'push'
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           message: |
-            :rocket: Deployed to production.
-            URL: ${{ steps.deploy.outputs.deployment-url }}
-            Commit: ${{ github.sha }}
+            :rocket: Deployed to merstat.org
+            Commit: `${{ github.sha }}`

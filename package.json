@@ -18,12 +18,13 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test:smoke": "node scripts/smoke-test.mjs",
+    "test:api": "node scripts/test-api.mjs",
+    "api:start": "node api/server.mjs",
     "icons": "node scripts/generate-icons.mjs",
     "images:optimise": "node scripts/optimise-hero.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
-    "@astrojs/netlify": "^6.5.0",
     "@astrojs/sitemap": "^3.4.0",
     "astro": "^5.13.0",
     "schema-dts": "^1.1.2",

@@ -3,17 +3,24 @@
  * /admin/index.html (created from this file by build process).
  *
  * Editors:
- *   1. Add GitHub OAuth credentials in Netlify (Identity → External Providers)
- *      or configure a different backend (Git Gateway is built-in for Sveltia).
- *   2. Visit /admin/ on the deployed site to log in.
- *   3. Editors can add jobs, case studies, training tracks, services, methods,
+ *   1. Create a GitHub OAuth app (Settings → Developer settings → OAuth Apps)
+ *      with authorisation callback URL https://merstat.org/auth/callback
+ *      and Homepage URL https://merstat.org. Note the client ID + secret.
+ *   2. In Sveltia's admin screen (/admin/), open the backend setup dialog and
+ *      enter those credentials. They are stored in the editor's browser.
+ *   3. Visit /admin/ to log in.
+ *   4. Editors can add jobs, case studies, training tracks, services, methods,
  *      posts, and team members through a friendly UI.
+ *
+ * The backend was `git-gateway` (Netlify Identity) until the move to the VPS;
+ * git-gateway is a Netlify-provisioned service and cannot exist off Netlify.
  */
 import { defineConfig } from 'sveltia-cms/config';
 
 export default defineConfig({
   backend: {
-    name: 'git-gateway',
+    name: 'github',
+    repo: 'MUNENE1212/Merstat-FrontEnd',
     branch: 'main',
   },
   media_folder: 'public/images',

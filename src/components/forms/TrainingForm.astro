@@ -14,14 +14,7 @@ interface Props {
 const { trainings } = Astro.props;
 ---
 
-<form
-  name="training"
-  method="POST"
-  action="/thanks?intent=training"
-  data-netlify="true"
-  netlify-honeypot="bot-field"
-  class="training-form"
->
+<form name="training" method="POST" action="/thanks?intent=training" class="training-form">
   <input type="hidden" name="form-name" value="training" />
   <p class="sr-only">
     <label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
